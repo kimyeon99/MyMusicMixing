@@ -1,0 +1,51 @@
+.music-list {
+  flex-wrap: nowrap;
+  margin-left: 30px;
+  /* 화면 너비가 768px 이상인 경우 한 줄로 표시 */
+}
+
+.music-item {
+  background-color: #181818;
+  margin-left: 30px;
+  margin-bottom: 30px;
+  width: 240px;
+  height: 350px;
+  transition: background-color 0.35s;
+  border-radius: 6%;
+}
+
+.music-item:hover {
+  cursor: pointer;
+  background-color: #242424;
+}
+
+.music-item:hover img {
+  transform: scale(1.05);
+  /* 이미지 크기 1.2배 확대 */
+}
+
+.music-item:hover p {}
+
+.music-item:hover img {}
+
+.album-image {
+  width: '180px';
+  height: '180px';
+  overflow: 'hidden';
+  transition: transform 0.2s;
+  margin-bottom: 15px;
+}
+
+.image-container {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.music-title {
+  margin-bottom: 10px;
+}
+
+.music-artist {
+  color: gray;
+}

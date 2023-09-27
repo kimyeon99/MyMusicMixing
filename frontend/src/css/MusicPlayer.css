@@ -1,0 +1,51 @@
+.music-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: black;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9998;
+
+}
+
+.music-player h2{
+  /* padding-left: 30px; */
+  text-align: center;
+}
+
+.music-player.visible {
+  transform: translateY(0); /* .visible 클래스가 적용되면 위로 슬라이드됩니다 */
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.controls button {
+  width: 90px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  color: black;
+
+}
+
+.controls button:hover {
+  background-color: #333;
+  color: #fff;
+}
