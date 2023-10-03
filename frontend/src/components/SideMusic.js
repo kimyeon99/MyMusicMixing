@@ -6,6 +6,7 @@ import { faGhost, faPlane, faStepForward } from "@fortawesome/free-solid-svg-ico
 import { useState } from "react";
 import { wrap } from "framer-motion";
 import { useMusicEffect } from "./customs/useMusicEffect";
+import MusicVisualizer from "./customs/MusicVisualizer";
 
 
 const SideMusic = () => {
@@ -32,11 +33,10 @@ const SideMusic = () => {
             right="16.1%"
             onClick={toggleIsSideMusic}
             bgColor="red.700"
-            >
+        >
         <FontAwesomeIcon icon={faPlane} size="xl" bounce/>
         </Button>
         }
-
 
         {selectedMusic ?
             <Box>
@@ -74,12 +74,17 @@ const Equalizers = () => {
     const {changeReverb, changeDelay, changeChorus, changeDistortion} = useMusicEffect();
 
     return (
-        <Flex gap={3} w={"100%"} flexWrap={wrap}>
-            <Button onClick={changeReverb}>Concert</Button>
-            {/* <Text style={textStyle}>reverb</Text> */}
-            <Button onClick={changeDelay}>Delay</Button>
-            <Button onClick={changeChorus}>Chorus</Button>
-            <Button onClick={changeDistortion}>Distortion</Button>               
-        </Flex>
+        <Box>
+            <Flex gap={3} w={"100%"} flexWrap={wrap} pb={3}>
+                <Button onClick={changeReverb}>Concert</Button>
+                <Button onClick={changeDelay}>Delay</Button>
+            </Flex>
+            <Flex gap={3} w={"100%"} flexWrap={wrap}>
+                <Button onClick={changeChorus}>Chorus</Button>
+                <Button onClick={changeDistortion}>Distortion</Button>               
+            </Flex> 
+            <MusicVisualizer width={300} height={100}></MusicVisualizer>
+
+        </Box>
     )
 }

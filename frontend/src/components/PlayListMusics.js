@@ -1,48 +1,29 @@
-import { Box, Flex, Text, Image, Button, Icon, Circle, SkeletonCircle } from '@chakra-ui/react';
+import { Box, Flex, Text, Image, Button, Icon, Circle, SkeletonCircle, Heading } from '@chakra-ui/react';
 import { faCreditCard, faFighterJet, faPause, faPauseCircle, faPlane, faPlay, faPrayingHands, faRocket, faSpaceShuttle, faYinYang } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../css/PlayListMusics.css'
+import "../css/Main.css"
 import { useEffect, useRef, useState } from 'react';
 import { usePlayList } from './customs/usePlayList';
 import baseImg from '../img/base_image2.jpg'
 import MusicVisualizer from './customs/MusicVisualizer';
+import ColorThief from 'colorthief';
 
-const PlayListMusics = () => {
+const PlayListMusics = ({loading}) => {
   const [isHovered, setIsHovered] = useState(false);
   const {selectedMusic, isPlaying, playingMusic, playToggleHandler, changeSelectedMusic} = usePlayList();
   const [isSelectedMusicPlaying, setIsSelectedMusicPlaying] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState("white");
-  const imageRef = useRef(null);
+  const [bgColor, setBgColor] = useState('#ffffff');
 
   useEffect(() => {
-    // params의 id로 music 검색해서 db에서 데이터 가지고 와서
-    // 새로고침해도 정보 유지가능하게
-
-    const image = imageRef.current;
-
-    if (image) {
-      const canvas = document.createElement("canvas");
-      canvas.width = image.width;
-      canvas.height = image.height;
-
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-      const colorCounts = {};
-
-      for (let i = 0; i < imageData.length; i += 4) {
-        const [r, g, b] = imageData.slice(i, i + 3);
-        const color = `rgba(${r},${g},${b}, 0.2)`;
-
-        colorCounts[color] = (colorCounts[color] || 0) + 1;
-      }
-
-      const maxColor = Object.keys(colorCounts).reduce((a, b) =>
-        colorCounts[a] > colorCounts[b] ? a : b
-      );
-
-      setBackgroundColor(maxColor);
+    if(loading){
+      const img = document.getElementById('music_img');
+      const colorThief = new ColorThief();
+      img.onload = () => {
+        const color = colorThief.getColor(img);
+        setBgColor(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+      };
     }
   }, []);
 
@@ -112,7 +93,7 @@ const PlayListMusics = () => {
   }
 
   return (
-    <Box className='main-container' pt={70} w="68%">
+    <Box className='main-container' pt={70}>
 
       {/* 플레이리스트 정보 */}
       {/* <Flex alignItems="center" mb={4}>
@@ -126,12 +107,12 @@ const PlayListMusics = () => {
       </Flex> */}
 
       <Flex alignItems="center" mb={4} flexShrink="0">
-        <Image src={baseImg} w="30%"  minW="100px"/>
+        <Image className='music_img' src={baseImg} w="30%"  minW="100px"/>
         <Box ml={4}>
-          <Text fontWeight="bold" fontSize="xl" style={{ wordWrap: "break-word" }}>
+          <Text className="font_white" fontWeight="bold" fontSize="xl" style={{ wordWrap: "break-word" }}>
             {selectedMusic.title}
           </Text>
-          <Text fontSize="sm" style={{ wordWrap: "break-word" }}>{selectedMusic.artist}</Text>
+          <Text className='font_gray' fontSize="sm" style={{ wordWrap: "break-word" }}>{selectedMusic.artist}</Text>
         </Box>
       </Flex>
       
@@ -147,9 +128,11 @@ const PlayListMusics = () => {
               <FontAwesomeIcon icon={faPlay} size='xl' className='move-animation'/>
             </Button>
           )}
-          <MusicVisualizer></MusicVisualizer>
+          <MusicVisualizer width={800} height={100}></MusicVisualizer>
       </Box>
-      <Box w='100%' h="1px" mb="30px" style={{ backgroundColor }}></Box>
+
+      {/* <Heading>아래의 색 코드는 {bgColor}</Heading> */}
+      <Box w='100%' h="1px" mb="30px" style={{ backgroundColor: bgColor }}></Box>
 
       {/* 노래 목록 */}
       {playlistData.tracks.map((track, index) => (
@@ -168,13 +151,13 @@ const PlayListMusics = () => {
             left="50%"
             transform="translate(-50%, -50%)"
             >
-            <FontAwesomeIcon icon={faPlay} size='lg' beat/>
+              <FontAwesomeIcon icon={faPlay} size='lg' beat/>
             </Box>
         )}
           <Image src={track.imageUrl} alt={track.title} boxSize="60px" />
           <Box ml={2}>
-            <Text fontWeight="bold">{track.title}</Text>
-            <Text fontSize="sm">{track.artist}</Text>
+            <Text className='font_white' fontWeight="bold">{track.title}</Text>
+            <Text className='font_gray' fontSize="sm">{track.artist}</Text>
           </Box>
           <Button
             ml="auto"

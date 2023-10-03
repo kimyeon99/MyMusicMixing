@@ -3,7 +3,6 @@ import '../../css/MusicPlayer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faStepForward, faStepBackward } from '@fortawesome/free-solid-svg-icons';
 import { usePlayList } from './usePlayList';
-import Pizzicato from 'pizzicato';
 import { Box, Center, Heading, Input, Slider, SliderFilledTrack, SliderThumb, SliderTrack } from '@chakra-ui/react';
 
 const MusicPlayer = () => {
@@ -68,7 +67,7 @@ const MusicPlayer = () => {
               <FontAwesomeIcon icon={faStepForward} />
             </button>
 
-            <Slider defaultValue={0.5} min={0} max={1} step={0.1} onChange={val => changeVolume(val)}>
+            <Slider defaultValue={0.25} min={0} max={1} step={0.1} onChange={val => changeVolume(val)}>
                 <SliderTrack bg='white'>
                   <Box position='relative' right={10} />
                   <SliderFilledTrack bg='red' />

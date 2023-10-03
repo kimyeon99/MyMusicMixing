@@ -1,17 +1,20 @@
 .music-list {
   flex-wrap: nowrap;
-  margin-left: 30px;
   /* 화면 너비가 768px 이상인 경우 한 줄로 표시 */
 }
 
 .music-item {
   background-color: #181818;
-  margin-left: 30px;
+  margin-left: 15px;
   margin-bottom: 30px;
   width: 240px;
   height: 350px;
   transition: background-color 0.35s;
   border-radius: 6%;
+}
+
+.musiclist-item:first-child {
+  margin-left: 0;
 }
 
 .music-item:hover {

@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { usePlayList } from "./usePlayList"; 
 import Pizzicato from 'pizzicato';
 
-const MusicVisualizer = () => {
+const MusicVisualizer = ({width, height}) => {
   const ref = useRef();
   
   const { soundRef, isPlaying } = usePlayList();
@@ -56,7 +56,7 @@ const MusicVisualizer = () => {
 
   }, [isPlaying]);
 
-  return <svg ref={ref} width="800" height="100"></svg>;
+  return <svg ref={ref} width={width} height={height}></svg>;
 };
 
 export default MusicVisualizer;

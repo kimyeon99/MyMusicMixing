@@ -29,7 +29,7 @@ const TrackList = () => {
     };
 
     return (
-        <Box className="track-container" pb={10}>
+        <Box className="track-container" pl={"15px"} pb={10} w={"80%"}>
             <Box><Heading pb={1} fontSize={28} color={"gray.300"}>요즘 인기있는 플레이리스트</Heading></Box>
             <Slider {...settings}>
                 {images.map((imageUrl, index) => (

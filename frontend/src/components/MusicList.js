@@ -4,7 +4,8 @@ import { usePlayList } from './customs/usePlayList';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { motion } from "framer-motion";
-import { Image, Text } from '@chakra-ui/react';
+import { Box, Center, Image, Text } from '@chakra-ui/react';
+import axios from 'axios';
 
 const MusicList = ({ songs }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,14 +20,24 @@ const MusicList = ({ songs }) => {
         setIsModalOpen(false);
     }
 
+    async function increaseMusicView(musicId){
+        try {
+            const res = await axios.post(`http://localhost:4000/music/${musicId}/increaseView`);
+            console.log(res.data);
+            return res.data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     function handlePlayMusic(music) {
         changeSelectedMusic(music);
-        // openModal();
-        return navigate('/playList');
+        increaseMusicView(music.id);
+        return navigate(`/playList/${music.id}`);
     }
 
     return (
-        <div className="music-list" style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <Box className="music-list" style={{ display: 'flex', flexWrap: 'wrap' }}>
             {songs.map((music, index) => (
                 <div key={index} className="music-item font-hover" onClick={() => handlePlayMusic(music)}>
                     <div className="image-container">
@@ -54,12 +65,12 @@ const MusicList = ({ songs }) => {
                     {/* <PlayModal isModalOpen={isModalOpen} openModal={openModal} closeModal={closeModal}></PlayModal> */}
 
                     <div className="music-details" style={{ textAlign: 'center' }}>
-                        <p className="music-title">{music.title}</p>
-                        <p className="music-artist">{music.artist}</p>
+                        <p className="music-title font_white">{music.title}</p>
+                        <p className="music-artist font_gray">{music.artist}</p>
                     </div>
                 </div>
             ))}
-        </div>
+        </Box>
     );
 };
 

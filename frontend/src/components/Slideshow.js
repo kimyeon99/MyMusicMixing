@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../css/Slideshow.css"
+import { Box, Heading } from "@chakra-ui/react";
 
 export default class Slideshow extends Component {
   render() {
@@ -17,7 +18,7 @@ export default class Slideshow extends Component {
     const settings = {
       dots: false,
       infinite: true,
-      slidesToShow: 1,
+      slidesToShow: 2,
       slidesToScroll: 1,
       autoplay: true,
       speed: 50000,
@@ -30,7 +31,8 @@ export default class Slideshow extends Component {
     };
 
     return (
-      <div className="slideshow-container" style={{ width: '100%' }}>
+      <div className="slideshow-container" style={{width:'90%'}}>
+        <Box><Heading pb={1} fontSize={28} color={"gray.300"}>가장 많이 재생된 노래</Heading></Box>
         <Slider {...settings}>
           {images.map((imageUrl, index) => (
             <div key={index}>

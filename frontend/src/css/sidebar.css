@@ -1,38 +1,62 @@
+.font_gray:hover{
+
+}
+
 .sidebar {
+  position: fixed;
   width: 20%;
-  /* min-width: 130px; */
+  min-width: 150px;
+  height: 80%;
+  margin: 7px;
+}
+
+.sidebar p{
+  font-weight: 700;
+}
+
+.sidebar_1, .sidebar_2{
+  border-radius: 8px;
   background-color: #121212;
-  color: #191919;
-  padding: 20px;
-  height: 3000px;
-  border-right: 1px white;
+  padding:4px 12px;
 }
 
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: white;
+.sidebar_1{
+  margin-bottom: 8px;
 }
 
-.categories {
-  color: white;
-  display: inline-block;
+.sidebar_2{
+  height: 75%;
+}
+
+.sidebar_p{
+  height: 40px;
+}
+
+.logo{
+  margin-top: 20px;
+}
+
+.back_sidebar{
+  width: 20%;
+  min-width: 150px;
   height: 100%;
+  background-color: black;
+  margin:7px;
 }
 
-.categories ul {
-  list-style: none;
-  padding: 0;
-}
-
-.categories li {
+.sideMenu{
+  width:100%;
+  background-color: #242424;
   margin-bottom: 10px;
-  cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px; /* 원하는 값으로 조정 가능 */
+  padding:12px;
+  margin-top: 20px;
 }
 
-.categories li:hover {
-  text-decoration: underline;
+.sideMenu p{
+  padding-bottom: 10px;
 }
 
 /* 슬라이드 쇼*/
@@ -82,3 +106,4 @@
 .slow-bounce-animation2 {
   animation: slowBounce2 5s linear infinite;
 }
+

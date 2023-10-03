@@ -9,12 +9,12 @@ import { usePlayList } from './components/customs/usePlayList';
 import { useEffect, useState } from 'react';
 import PlayList from './pages/PlayList';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import './css/sidebar.css';
 
 const theme = extendTheme({
   fonts: {
-    body: 'Hack', // 원하는 폰트로 변경
-    heading: 'Hack', // 원하는 폰트로 변경
-    // 여기에 필요한 폰트 종류 추가
+    body: 'Hack',
+    heading: 'Hack',
   },
 });
 
@@ -23,7 +23,7 @@ function App() {
     <ChakraProvider theme={theme}>
         <Routes>
           <Route path="/" element={<Main/>} />
-          <Route path="/playlist" element={<PlayList/>}></Route>
+          <Route path="/playlist/:musicId" element={<PlayList/>}></Route>
         </Routes>
     </ChakraProvider>
   );

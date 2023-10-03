@@ -28,14 +28,16 @@ import { Box, Heading  } from "@chakra-ui/react";
 
   return (
     <Box className="App">
-      <Sidebar/> 
+      <Box className="back_sidebar"></Box>
+      <Sidebar/>
       <MusicPlayer/>
-      <Box className="main-container" w={isSideMusic ? '65%' : '85%'} p={10}>
-        <Box><Heading pb={1} fontSize={28} color={"gray.300"}>가장 많이 재생된 노래</Heading></Box>
-        <Slideshow></Slideshow> 
-        <TrackList ></TrackList>
-        <Box><Heading pb={1} fontSize={28} color={"gray.300"}>노래</Heading></Box>
-        <MusicList songs={songs}></MusicList>
+      <Box className="main-container">
+        <Box className="istyle">
+          <Slideshow ></Slideshow> 
+          <TrackList ></TrackList>
+          <Box><Heading pb={1} fontSize={28} color={"gray.300"}>노래</Heading></Box>
+          <MusicList songs={songs}></MusicList>
+        </Box>
       </Box>
       <SideMusic></SideMusic>
     </Box>
