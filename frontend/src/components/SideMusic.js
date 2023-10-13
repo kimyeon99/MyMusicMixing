@@ -27,15 +27,15 @@ const SideMusic = () => {
 
         {
             
-        <Button
-            position="fixed"
-            top="50%"
-            right="16.1%"
-            onClick={toggleIsSideMusic}
-            bgColor="red.700"
-        >
-        <FontAwesomeIcon icon={faPlane} size="xl" bounce/>
-        </Button>
+        // <Button
+        //     position="fixed"
+        //     top="50%"
+        //     right="16.1%"
+        //     onClick={toggleIsSideMusic}
+        //     bgColor="red.700"
+        // >
+        // <FontAwesomeIcon icon={faPlane} size="xl" bounce/>
+        // </Button>
         }
 
         {selectedMusic ?
