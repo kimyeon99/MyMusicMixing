@@ -4,6 +4,7 @@ import { Repository, EntityManager } from 'typeorm';
 import { InjectRepository, InjectEntityManager } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
+import { identity } from 'rxjs';
 
 @Injectable()
 export class MusicService {
@@ -60,4 +61,23 @@ export class MusicService {
         const musicList = await this.musicRepository.find();
         return musicList;
     }
+
+    async getOne(id: number) {
+      const musicInfo = await this.musicRepository.findOne({where: {id}})
+      if (!musicInfo) {
+        throw new Error('Music not found');
+      }
+      return musicInfo;
+    }
+
+    async increaseView(id: number){
+      const musicInfo = await this.musicRepository.findOne({where: {id}});
+      if (!musicInfo) {
+          throw new Error('Music not found');
+      }
+      musicInfo.view++;
+      await this.musicRepository.save(musicInfo);
+      return musicInfo;
+  }
+  
 }
