@@ -6,14 +6,17 @@ import reportWebVitals from './reportWebVitals';
 import {PlayListProvider} from '../src/components/customs/usePlayList'
 import { BrowserRouter } from 'react-router-dom';
 import { MusicEffectProvider } from './components/customs/useMusicEffect';
+import { AuthProvider } from './components/customs/useAuth';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <PlayListProvider>
     <MusicEffectProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>
     </MusicEffectProvider>
   </PlayListProvider>
 );
