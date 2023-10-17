@@ -10,6 +10,12 @@ import { PlaylistService } from './playlist/playlist.service';
 import { PlaylistController } from './playlist/playlist.controller';
 import { Playlist } from './entify/playlist.entity';
 import { PlaylistModule } from './playlist/playlist.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
+import { UserController } from './user/user.controller';
+import { UserService } from './user/user.service';
+import { UserModule } from './user/user.module';
+import { User } from './entify/user.entify';
 
 @Module({
   imports: [
@@ -20,13 +26,14 @@ import { PlaylistModule } from './playlist/playlist.module';
       username: 'root',
       password: '1214',
       database: 'MMM',
-      entities: [Music, Playlist],
-      migrations: ['src/migration/*.ts'],
+      entities: [Music, Playlist, User],
       synchronize: false,
+      migrations: ["dist/migrations/*{.ts,.js}"], // migration 수행할 파일
+      migrationsTableName: "migrations" // migration 내용이 기록될 테이블명(default = migration)
     }),
-    MusicModule, PlaylistModule,
+    MusicModule, PlaylistModule, AuthModule, UserModule,
   ],
-  controllers: [AppController,],
-  providers: [AppService,],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule { }

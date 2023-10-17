@@ -17,7 +17,7 @@ async function bootstrap() {
   });
 
   const musicService = app.get(MusicService);
-  // await musicService.uploadFiles('../frontend/src/musics');
+  await musicService.uploadFiles('../frontend/src/musics');
 
   const playlistService = app.get(PlaylistService);
   // await playlistService.createPlaylist("A");
