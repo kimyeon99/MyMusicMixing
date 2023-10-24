@@ -15,27 +15,31 @@ const SideMusic = () => {
     return (
         <Box
             w={isSideMusic ? '26%' : '0'}
-            h="3000px"
+            h="100%"
             bg="#181818"
             color="white"
             overflowX="hidden"
             zIndex="9999"
             textAlign="center"
-            position="fixed"
+            position= "fixed"
+            top= "0"
             right="0"
         >
 
         {
             
-        // <Button
-        //     position="fixed"
-        //     top="50%"
-        //     right="16.1%"
-        //     onClick={toggleIsSideMusic}
-        //     bgColor="red.700"
-        // >
+        <Button
+            position="fixed"
+            top="2%"
+            right="0.5%"
+            onClick={toggleIsSideMusic}
+            bgColor="yellow.300"
+            size={'sm'}
+        >
+            👻
+        </Button>
+
         // <FontAwesomeIcon icon={faPlane} size="xl" bounce/>
-        // </Button>
         }
 
         {selectedMusic ?
@@ -64,13 +68,6 @@ export default SideMusic;
 
 
 const Equalizers = () => {
-    const textStyle = {
-        writingMode: "vertical-rl", // 세로로 배치
-        textOrientation: "mixed", // 텍스트 방향 혼합
-        padding: "4px",
-        color: "white",
-      };
-
     const {changeReverb, changeDelay, changeChorus, changeDistortion} = useMusicEffect();
 
     return (

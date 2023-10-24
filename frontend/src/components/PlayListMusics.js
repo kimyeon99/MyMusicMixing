@@ -17,6 +17,7 @@ import MusicVisualizer from './customs/MusicVisualizer';
 import ColorThief from 'colorthief';
 import convert from 'color-convert';
 import { dblClick } from '@testing-library/user-event/dist/click';
+import Sketch from './Sketch';
 
 
 const PlayListMusics = ({loading}) => {
@@ -28,45 +29,51 @@ const PlayListMusics = ({loading}) => {
   const [selectedImage, setSelectedImage] = useState('');
 
   useEffect(() => {
-    if(!loading){
-      const images = [ baseImg2, baseImg3, baseImg4, baseImg5, baseImg6, baseImg7, baseImg8];
-      // const images = [baseImg8];
+    if (!loading) {
+      const images = [baseImg2, baseImg3, baseImg4, baseImg5, baseImg6, baseImg7, baseImg8];
+      //const images = [baseImg8];
       const randomIndex = Math.floor(Math.random() * images.length);
       setSelectedImage(images[randomIndex]);
 
       const img = document.getElementById('music_img');
       const colorThief = new ColorThief();
 
-      const MaxBightness = 75;
-      const MaxDarkBightness = 70;
+      const MaxBightness = 65;
+      const MaxDarkBightness = 65;
       const Minbrightness = 40;
-      const MinDarkbrightness = 15;
+      const MinDarkbrightness = 40;
+      // const Minbrightness = 40;
+      // const MinDarkbrightness = 15;
       img.onload = () => {
-          const color = colorThief.getColor(img);
-          // setBgColor(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+        const color = colorThief.getColor(img);
+        // setBgColor(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
 
-          // ColorThief가 반환한 RGB 값
-          const rgb = [color[0], color[1], color[2]];
+        // ColorThief가 반환한 RGB 값
+        const rgb = [color[0], color[1], color[2]];
 
-          // RGB에서 HSL로 변환
-          let hsl = convert.rgb.hsl(rgb);
-          let hsl2 = convert.rgb.hsl(rgb);
+        // RGB에서 HSL로 변환
+        let hsl = convert.rgb.hsl(rgb);
+        let hsl2 = convert.rgb.hsl(rgb);
+        console.log(`hsl2 = ${hsl2[2]}`);
+
+        if (hsl2[2] < Minbrightness) {
+          hsl2[2] = Minbrightness;
+          hsl2[0] += -5;
+          hsl[0] += -5;
+          hsl2[1] += 20;
+          hsl[1] += 20;
+          hsl[2] = MinDarkbrightness;
+        } else if (hsl2[2] > MaxBightness) {
+          hsl2[2] = MaxBightness;
+          hsl[2] = MaxDarkBightness;
           console.log(`hsl2 = ${hsl2[2]}`);
-
-          if(hsl2[2] < Minbrightness){
-            hsl2[2] = Minbrightness;
-            hsl[2] = MinDarkbrightness;
-          }else if(hsl2[2] > MaxBightness){
-            hsl2[2] = MaxBightness;
-            hsl[2] = MaxDarkBightness;
-            console.log(`hsl2 = ${hsl2[2]}`);
-          }
-
-          // 1= 채도, 2 = 밝기
-          setBgColor(`hsl(${hsl2[0]}, ${hsl2[1]}%, ${hsl2[2]}%)`);
-          setDBgColor(`hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`);
         }
-      };
+
+        // 1= 채도, 2 = 밝기
+        setBgColor(`hsl(${hsl2[0]}, ${hsl2[1]}%, ${hsl2[2]}%)`);
+        setDBgColor(`hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`);
+      }
+    };
   }, [loading, selectedImage]);
 
   function brightness(rgb) {
@@ -141,6 +148,7 @@ const PlayListMusics = ({loading}) => {
   return (
     // style={{ background: `linear-gradient(to bottom, ${bgColor}, #000)` }}
 <Box className='main-container' pt={3} position={'relative'} height='100%'>
+    
     <Box w={'100%'} h={'55%'} ></Box>
     <Box 
       width='100%'
@@ -189,6 +197,9 @@ const PlayListMusics = ({loading}) => {
           )}
           {/* <MusicVisualizer width={'100%'} height={100}></MusicVisualizer> */}
         </Box>
+
+        <Sketch analyser={playingMusic ? playingMusic.analyserNode : null} />
+
 
         {playlistData.tracks.map((track, index) => (
         <Flex  ml={5} key={index} alignItems="center" mb={2} w="80%" className='playListMusicsItem'       

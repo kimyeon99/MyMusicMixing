@@ -23,18 +23,17 @@ const theme = extendTheme({
 
 function App() {
 
-  const {user, setUser} = useAuth();
+  const {user, login} = useAuth();
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await authAxios.get('/auth/authCheck');
-        console.log('response'+response);
+        const response = await authAxios.post('/auth/authCheck');
         if (response.data) {
-          setUser(response.data.user);
+          login(response.data);
         }
       } catch (error) {
-          console.log(`로그인 에러 ${error}`);
+          console.log(`유저 정보 없음: ${error}`);
       }
     };
 

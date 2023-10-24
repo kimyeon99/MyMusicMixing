@@ -31,8 +31,8 @@ export default class Slideshow extends Component {
     };
 
     return (
-      <div className="slideshow-container" style={{width:'90%'}}>
-        <Box><Heading pb={1} fontSize={28} color={"gray.300"}>가장 많이 재생된 노래</Heading></Box>
+      <Box className="slideshow-container" pl={"20px"}>
+        <Box><Heading pb={1} fontSize={28} color={"gray.300"}>Most Played Musics</Heading></Box>
         <Slider {...settings}>
           {images.map((imageUrl, index) => (
             <div key={index}>
@@ -40,7 +40,7 @@ export default class Slideshow extends Component {
             </div>
           ))}
         </Slider>
-      </div>
+      </Box>
     );
   }
 }

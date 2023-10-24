@@ -4,12 +4,17 @@ import { usePlayList } from './customs/usePlayList';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { motion } from "framer-motion";
-import { Box, Center, Image, Text } from '@chakra-ui/react';
+import { Box, Center, Heading, Image, SimpleGrid, Text, useBreakpointValue } from '@chakra-ui/react';
 import axios from 'axios';
+import baseImg2 from '../img/base_image2.jpg';
+import "../css/test.css"
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const MusicList = ({ songs }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { addPlayList, selectedMusic, changeSelectedMusic, isSideMusic } = usePlayList();
+    const columns = useBreakpointValue({ base: 1, md: 2, lg: 4 });
     const navigate = useNavigate();
 
     function openModal() {
@@ -37,40 +42,17 @@ const MusicList = ({ songs }) => {
     }
 
     return (
-        <Box className="music-list" style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {songs.map((music, index) => (
-                <div key={index} className="music-item font-hover" onClick={() => handlePlayMusic(music)}>
-                    <div className="image-container">
-                        {
-                            music.image ? (
-                                <img
-                                    src={music.image}
-                                    alt={`Album ${index + 1}`}
-                                    className="album-image"
-                                    style={{ borderRadius: '6%' }}
-                                />
-                            )
-                                :
-                                <Image
-                                    src={base_image_url}
-                                    alt={`Album ${index + 1}`}
-                                    className="album-image"
-                                    style={{ borderRadius: '50%' }}
-                                />
-                                
-                                
-                        }
-                    </div>
-
-                    {/* <PlayModal isModalOpen={isModalOpen} openModal={openModal} closeModal={closeModal}></PlayModal> */}
-
-                    <div className="music-details" style={{ textAlign: 'center' }}>
-                        <p className="music-title font_white">{music.title}</p>
-                        <p className="music-artist font_gray">{music.artist}</p>
-                    </div>
-                </div>
-            ))}
-        </Box>
+        <Carousel showThumbs={false} dynamicHeight={false} showStatus={false}>
+            <SimpleGrid columns={columns} spacing={10}>
+                {songs.map((song, index) => 
+                    <Box className="song" onClick={() => handlePlayMusic(song)}>
+                        <Image src={baseImg2} alt={`Album ${index+1}`} className="album-image"/>
+                        <Heading as="h3" size="md" mt={4}>{song.title}</Heading>
+                        <Text mt={2}>{song.artist}</Text>
+                    </Box>
+                )}
+            </SimpleGrid>
+        </Carousel>
     );
 };
 

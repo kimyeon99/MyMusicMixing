@@ -19,22 +19,21 @@ const TrackList = () => {
 
     const settings = {
         dots: false,
-        infinite: true,
-        slidesToShow: 5,
-        slidesToScroll: 1,
+        infinite: false,
+        slidesToShow: 4,
+        slidesToScroll: 3,
         autoplay: false,
         cssEase: "linear",
-        arrows: true, // 이전 및 다음 버튼 숨김
-
+        arrows: false,
     };
 
     return (
-        <Box className="track-container" pl={"15px"} pb={10} w={"80%"}>
+        <Box className="track-container" pl={"20px"} pb={10}>
             <Box><Heading pb={1} fontSize={28} color={"gray.300"}>요즘 인기있는 플레이리스트</Heading></Box>
             <Slider {...settings}>
                 {images.map((imageUrl, index) => (
                     <Box key={index}>
-                        <Img w="50%" className="imgs" src={imageUrl} alt={`Slide ${index + 1}`} />
+                        <Img w="100%" className="imgs" src={imageUrl} alt={`Slide ${index + 1}`} />
                     </Box>
                 ))}
             </Slider>

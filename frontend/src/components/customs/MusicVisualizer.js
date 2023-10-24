@@ -33,8 +33,8 @@ const MusicVisualizer = ({width, height}) => {
           .append('rect')
           .merge(svg.selectAll('rect'))
           .attr("x", (d,i) => i * (svg.attr("width") / normalizedData.length))
-          .attr("y", d => svg.attr("height") - d * svg.attr("height"))
           .attr("width", svg.attr("width") / normalizedData.length)
+          .attr("y", d => svg.attr("height") - d * svg.attr("height"))
           .attr("height", d => d * svg.attr("height"))
           .attr('fill', 'orange');
 

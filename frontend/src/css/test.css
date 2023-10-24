@@ -1,0 +1,23 @@
+.music-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.song {
+    background-color: #f8f8f8;
+    border-radius: 10px;    
+    padding: 20px;
+}
+
+.song img {
+   width:100%;
+   height:auto; 
+   object-fit:cover; 
+   border-radius:10px; 
+}
+
+.song h3,
+.song p {
+   margin-top :10px; 
+}

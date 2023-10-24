@@ -31,6 +31,7 @@
 
 .controls button {
   width: 90px;
+  max-width: 90px;
   height: 40px;
   border-radius: 50%;
   background-color: #fff;

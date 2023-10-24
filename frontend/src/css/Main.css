@@ -1,12 +1,12 @@
 .main-container{
-    width: 100%;
+    width: 75%;
 }
 
 .istyle{
   border-radius: 8px; /* 원하는 값으로 조정 가능 */
   background-color: #121212; /* 원하는 값으로 조정 가능 */
   margin-top:7px;
-  margin-right:7px;
+  /* margin-right:7px; */
   /* margin-left:20px; */
   padding-top: 20px;
 }
