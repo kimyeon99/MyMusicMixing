@@ -16,7 +16,7 @@ import { JwtStrategy } from './jwt.strategy';
       global: true, // 이거 뭔지
       secret: 'ysj',
       signOptions: {
-        expiresIn: '1h',
+        expiresIn: '30m',
       },
     }),
     forwardRef(() => UserModule),

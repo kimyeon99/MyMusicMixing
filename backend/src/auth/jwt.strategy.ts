@@ -13,17 +13,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {
           const cookies = request.cookies;
-          this.logger.log(cookies);
           if (!cookies) {
-            this.logger.log('쿠키 없다고!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11');
+            return;
           } else {
             const accessTokenCookie = cookies['access_token'];
             if (accessTokenCookie) {
-              this.logger.log('쿠키있네' + accessTokenCookie);
               return accessTokenCookie;
-            }
+            } 
           }
-          return null;
         },
       ]),
       secretOrKey: 'ysj', // JWT 시크릿 키
@@ -31,8 +28,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  // validate 메소드의 data 매개변수에 들어가는 값은 JWT 토큰의 payload 부분!
   async validate(data) {
-    const user = { userId: data.userId, username: data.username }
+    const user = { userId: data.sub, username: data.username }
     return user;
   }
 }

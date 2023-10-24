@@ -1,7 +1,7 @@
 import { Controller, Get, Body, Post, Res, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { Request, Response } from 'express';
+import { Request, Response, response } from 'express';
 
 interface RequestWithUser extends Request {
   user: any; // 이 부분에 실제 유저 객체의 타입을 지정해야 합니다.
@@ -34,7 +34,7 @@ export class AuthController {
 
   @Post('authCheck')
   @UseGuards(AuthGuard('jwt'))
-  async authCheck(@Req() request: RequestWithUser) {
-    return this.authService.authCheck(request);
+  async authCheck(@Req() request: RequestWithUser, @Res() response: Response) {
+    return this.authService.authCheck(request, response);
   }
 }

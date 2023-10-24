@@ -3,6 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entify/user.entify';
+import * as argon2 from 'argon2'
 
 export class CreateUserDto {
     username: string;
@@ -18,7 +19,6 @@ export class UserService {
 
   private logger: Logger = new Logger('AppGateway');
 
-
   async findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
@@ -32,8 +32,30 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const user = await this.userRepository.create(createUserDto);
-    return await this.userRepository.save(user);
+    if(!createUserDto.username || !createUserDto.password || /\s/.test(createUserDto.username) || /\s/.test(createUserDto.password)){
+      throw new Error('Wrong username or password');
+    }
+
+    let user;
+    try{
+      const hashedPassword = await this.hashingPassword(createUserDto.password);
+      createUserDto.password = hashedPassword;
+      user = await this.userRepository.create(createUserDto);
+    }catch(error){
+      this.logger.log("There was an error creating the user", error);
+      throw error;
+    }
+    
+    return this.userRepository.save(user);
+  }
+
+  async hashingPassword(password){
+    try{
+      return argon2.hash(password);
+    }catch(error){
+      this.logger.log("There was an error hasing the password", error);
+      throw error;
+    }
   }
 
 //   async update(id: number, user: User): Promise<User> {

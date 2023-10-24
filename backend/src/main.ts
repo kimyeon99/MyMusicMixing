@@ -4,12 +4,13 @@ import { MusicService } from './music/music.service';
 import * as express from 'express';
 import { join } from 'path';
 import { PlaylistService } from './playlist/playlist.service';
+import * as cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use('/static', express.static(join(__dirname, '..', 'public')));
-
+  app.use(cookieParser());
   app.enableCors({
     origin: 'http://localhost:3000', // 허용할 도메인 주소
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -17,7 +18,7 @@ async function bootstrap() {
   });
 
   const musicService = app.get(MusicService);
-  await musicService.uploadFiles('../frontend/src/musics');
+  // await musicService.uploadFiles('../frontend/src/musics');
 
   const playlistService = app.get(PlaylistService);
   // await playlistService.createPlaylist("A");
