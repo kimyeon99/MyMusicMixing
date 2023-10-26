@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState, useRef } from 'react';
 import Pizzicato from 'pizzicato';
 import * as d3 from "d3";
-import Sketch from '../Sketch';
 
 
 const PlayListContext = createContext();
@@ -117,7 +116,6 @@ export function PlayListProvider({ children }) {
       isSideMusic, toggleIsSideMusic, soundRef, playingMusic
       , playToggleMusicPlayer}}>
         {children}
-        <Sketch />
     </PlayListContext.Provider>
   );
 }

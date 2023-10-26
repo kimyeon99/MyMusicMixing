@@ -15,41 +15,44 @@ const PlayList = () => {
   const { musicId } = useParams();
   const [loading, setLoading] = useState(true);
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(true);
     const getMusicData = async () => {
-      try{
-        const musicData = await axios.get(`http://localhost:4000/music/${musicId}`);
-        changeSelectedMusic(musicData.data);
-        console.log(musicData.data);
-      }catch{
-        console.log('refresh music error');
-      }finally{
-        setLoading(false);
+      if (musicId) {
+        try {
+          const musicData = await axios.get(`http://localhost:4000/music/${musicId}/getOne`);
+          changeSelectedMusic(musicData.data);
+          console.log(musicData.data);
+        } catch {
+          console.log('refresh music error');
+          setLoading(false);
+        } finally {
+          setLoading(false);
+        }
       }
     }
     getMusicData();
   }, [musicId]);
 
   return (
-      <Box>{
-        loading ? <Center><Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
+    <Box>{
+      loading ? <Center><Spinner
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="blue.500"
+        size="xl"
+        justifyContent='center'
+      />
         <h1 color="black">{loading}</h1>
-        </Center> :
-      <div className="App">
-        <Box className="back_sidebar"></Box>
-        <Sidebar />
-        <MusicPlayer />
-        <PlayListMusics loading={loading} style={{width:'100%'}}></PlayListMusics>
-        <SideMusic></SideMusic>
-      </div>
-      }
+      </Center> :
+        <div className="App">
+          <Sidebar />
+          <MusicPlayer />
+          <PlayListMusics loading={loading} style={{ width: '100%' }}></PlayListMusics>
+          <SideMusic></SideMusic>
+        </div>
+    }
     </Box>
   );
 }

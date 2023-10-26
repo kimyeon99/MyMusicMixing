@@ -8,7 +8,7 @@ import { color } from 'framer-motion';
 
 const MusicPlayer = () => {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const { selectedMusic,playToggleMusicPlayer, playingMusic, playList, playToggleHandler, isPlaying, changeVolumeHandler, volume } = usePlayList(); // loadPlayList 함수 추가
+  const { selectedMusic, playToggleMusicPlayer, playingMusic, playList, playToggleHandler, isPlaying, changeVolumeHandler, volume } = usePlayList(); // loadPlayList 함수 추가
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
 
   const nextSongHandler = () => {
@@ -24,41 +24,43 @@ const MusicPlayer = () => {
   }
 
   return (
-    <div className="music-player" style={{minHeight:"100px"}}>
+    <div className="music-player" style={{ minHeight: "66px" }}>
       {playingMusic ? (
         <div>
-            {/* <h2>Playing: {playList[currentSongIndex].title}</h2> */}
-            <Flex width='100%' justifyContent="space-between">
+          {/* <h2>Playing: {playList[currentSongIndex].title}</h2> */}
+          <Flex width='100%' alignItems="center">
+            <Box mr='100px'>
               <Heading size={'sm'} color='whiteAlpha.900'>{playingMusic.title}</Heading>
-              <Box className="controls">
-                <button onClick={prevSongHandler} className="control-button">
-                  <FontAwesomeIcon icon={faStepBackward}/>
-                </button>
-                <button onClick={playToggleMusicPlayer} className="control-button">
-                  {isPlaying ? (
-                    <FontAwesomeIcon icon={faPause} color="black"/>
-                  ) : (
-                    <FontAwesomeIcon icon={faPlay}/>
-                  )}
-                </button>
-                <button onClick={nextSongHandler} className="control-button">
-                  <FontAwesomeIcon icon={faForwardStep} />
-                </button>
+            </Box>
+            <Box className="controls" mr='100px'>
+              <button onClick={prevSongHandler} className="control-button">
+                <FontAwesomeIcon icon={faStepBackward} />
+              </button>
+              <button onClick={playToggleMusicPlayer} className="control-button">
+                {isPlaying ? (
+                  <FontAwesomeIcon icon={faPause} color="black" />
+                ) : (
+                  <FontAwesomeIcon icon={faPlay} />
+                )}
+              </button>
+              <button onClick={nextSongHandler} className="control-button">
+                <FontAwesomeIcon icon={faForwardStep} />
+              </button>
 
-                <Slider defaultValue={0.25} min={0} max={1} step={0.01} onChange={val => changeVolume(val)}>
-                  <SliderTrack bg='white'>
-                    <Box position='relative' right={10} />
-                    <SliderFilledTrack bg='red' />
-                  </SliderTrack>
-                  <SliderThumb boxSize={6} />
-                </Slider>
+              <Slider defaultValue={0.25} min={0} max={1} step={0.01} onChange={val => changeVolume(val)}>
+                <SliderTrack bg='white'>
+                  <Box position='relative' right={10} />
+                  <SliderFilledTrack bg='red' />
+                </SliderTrack>
+                <SliderThumb boxSize={6} />
+              </Slider>
 
-              </Box>
-            </Flex>
+            </Box>
+          </Flex>
         </div>
       ) : (
         <div>
-          <div className="controls" style={{ textAlign: 'center' }}>
+          <Box className="controls" style={{ textAlign: 'center' }} mr='100px'>
             <button className="control-button">
               <FontAwesomeIcon icon={faStepBackward} />
             </button>
@@ -66,17 +68,17 @@ const MusicPlayer = () => {
               <FontAwesomeIcon icon={faPlay} />
             </button>
             <button className="control-button">
-              <FontAwesomeIcon icon={faForwardStep} className="control-button"/>
+              <FontAwesomeIcon icon={faForwardStep} className="control-button" />
             </button>
 
             <Slider defaultValue={0.25} min={0} max={1} step={0.1} onChange={val => changeVolume(val)}>
-                <SliderTrack bg='white'>
-                  <Box position='relative' right={10} />
-                  <SliderFilledTrack bg='red' />
-                </SliderTrack>
-                <SliderThumb boxSize={6} />
-              </Slider>
-          </div>
+              <SliderTrack bg='white'>
+                <Box position='relative' right={10} />
+                <SliderFilledTrack bg='red' />
+              </SliderTrack>
+              <SliderThumb boxSize={6} />
+            </Slider>
+          </Box>
         </div>
       )}
     </div>

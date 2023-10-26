@@ -10,7 +10,7 @@ import MusicVisualizer from "./customs/MusicVisualizer";
 
 
 const SideMusic = () => {
-    const {isSideMusic, toggleIsSideMusic, selectedMusic} = usePlayList();
+    const { isSideMusic, toggleIsSideMusic, selectedMusic } = usePlayList();
 
     return (
         <Box
@@ -21,46 +21,48 @@ const SideMusic = () => {
             overflowX="hidden"
             zIndex="9999"
             textAlign="center"
-            position= "fixed"
-            top= "0"
+            position="fixed"
+            top="0"
             right="0"
         >
 
-        {
-            
-        <Button
-            position="fixed"
-            top="2%"
-            right="0.5%"
-            onClick={toggleIsSideMusic}
-            bgColor="yellow.300"
-            size={'sm'}
-        >
-            👻
-        </Button>
 
-        // <FontAwesomeIcon icon={faPlane} size="xl" bounce/>
-        }
+            <Button
+                position="fixed"
+                bottom="2%"
+                right="1%"
+                onClick={toggleIsSideMusic}
+                bgColor="green.300"
+                size={'sm'}
+            >
+                👻
+            </Button>
 
-        {selectedMusic ?
-            <Box>
-                <Center>
-                    <Box>
-                        <Heading pt="20px">{selectedMusic.title}</Heading>
-                        <Text pt="5px">{selectedMusic.artist}</Text>
-                        <Img p="20px" src={baseImg}></Img>
-                    </Box>
-                </Center>
+            {selectedMusic ?
                 <Box>
-                    customs
                     <Center>
-                        <Equalizers></Equalizers>
+                        <Box>
+                            <Heading pt="20px">{selectedMusic.title}</Heading>
+                            <Text pt="5px">{selectedMusic.artist}</Text>
+                        </Box>
                     </Center>
+                    <Center>
+                        <Img p="20px" src={selectedMusic.img}></Img>
+                    </Center>
+
+                    <Box>
+                        <Center>
+                            <Equalizers></Equalizers>
+                        </Center>
+                    </Box>
+                    {/* <Center>
+                    <MusicVisualizer width={300} height={100}></MusicVisualizer>
+                </Center> */}
+
                 </Box>
-            </Box>
-            : <Heading p="20px">library</Heading>
-        }
-      </Box>
+                : <Heading p="20px">library</Heading>
+            }
+        </Box>
     );
 }
 
@@ -68,20 +70,20 @@ export default SideMusic;
 
 
 const Equalizers = () => {
-    const {changeReverb, changeDelay, changeChorus, changeDistortion} = useMusicEffect();
+    const { changeReverb, changeDelay, changeChorus, changeDistortion } = useMusicEffect();
 
     return (
         <Box>
-            <Flex gap={3} w={"100%"} flexWrap={wrap} pb={3}>
+            <Text mb={-7}>Customs</Text>
+            <Flex gap={3} w={"100%"} flexWrap={wrap} pb={3} pt={10}>
                 <Button onClick={changeReverb}>Concert</Button>
                 <Button onClick={changeDelay}>Delay</Button>
+                <Button onClick={changeDistortion}>Distortion</Button>
             </Flex>
             <Flex gap={3} w={"100%"} flexWrap={wrap}>
-                <Button onClick={changeChorus}>Chorus</Button>
-                <Button onClick={changeDistortion}>Distortion</Button>               
-            </Flex> 
-            <MusicVisualizer width={300} height={100}></MusicVisualizer>
+                {/* <Button onClick={changeChorus}>Chorus</Button> */}
+            </Flex>
 
-        </Box>
+        </Box >
     )
 }

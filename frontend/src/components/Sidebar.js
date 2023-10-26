@@ -42,7 +42,7 @@ const Sidebar = () => {
             <Button size={'sm'}>Look</Button>
           </Box>
         </Box>
-        <Box ml={5}>
+        <Box ml={5} mt={10}>
           {user ? 
             <Menu {...menu}>
               <MenuButton as={Button} rightIcon={menu.isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />} colorScheme="yellow" mt="100px">

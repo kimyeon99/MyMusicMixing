@@ -1,6 +1,6 @@
 .music-list {
   flex-wrap: nowrap;
-  /* 화면 너비가 768px 이상인 경우 한 줄로 표시 */
+  background-color: red;
 }
 
 .music-item {

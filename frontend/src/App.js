@@ -16,8 +16,12 @@ import authAxios from './components/customs/authAxios';
 
 const theme = extendTheme({
   fonts: {
-    body: 'Hack',
-    heading: 'Hack',
+    body: 'Gotham-Thin',
+    heading: 'Gotham-Thin',
+  },
+  fontSizes: {
+    body: '14px',
+    heading: '16px',
   },
 });
 

@@ -12,17 +12,14 @@ import baseImg5 from '../img/base_image5.jpg';
 import baseImg6 from '../img/base_image5.webp';
 import baseImg7 from '../img/base_image7.jpg';
 import baseImg8 from '../img/base_image8.jpg';
-
 import MusicVisualizer from './customs/MusicVisualizer';
 import ColorThief from 'colorthief';
 import convert from 'color-convert';
-import { dblClick } from '@testing-library/user-event/dist/click';
-import Sketch from './Sketch';
 
 
-const PlayListMusics = ({loading}) => {
+const PlayListMusics = ({ loading }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const {selectedMusic, isPlaying, playingMusic, playToggleHandler, changeSelectedMusic} = usePlayList();
+  const { selectedMusic, isPlaying, playingMusic, playToggleHandler, changeSelectedMusic } = usePlayList();
   const [isSelectedMusicPlaying, setIsSelectedMusicPlaying] = useState(false);
   const [bgColor, setBgColor] = useState('');
   const [dBgColor, setDBgColor] = useState('');
@@ -123,124 +120,115 @@ const PlayListMusics = ({loading}) => {
         artist: 'Artist 7',
         imageUrl: 'https://via.placeholder.com/150', // 노래 이미지 URL
       },
-      {
-        title: 'Song 8',
-        artist: 'Artist 8',
-        imageUrl: 'https://via.placeholder.com/150', // 노래 이미지 URL
-      },
-      {
-        title: 'Song 9',
-        artist: 'Artist 9',
-        imageUrl: 'https://via.placeholder.com/150', // 노래 이미지 URL
-      },
-      {
-        title: 'Song 10',
-        artist: 'Artist 10',
-        imageUrl: 'https://via.placeholder.com/150', // 노래 이미지 URL
-      },
+
     ],
   };
 
-  function handlePlayMusic(){
+  function handlePlayMusic() {
     playToggleHandler();
   }
 
   return (
     // style={{ background: `linear-gradient(to bottom, ${bgColor}, #000)` }}
-<Box className='main-container' pt={3} position={'relative'} height='100%'>
-    
-    <Box w={'100%'} h={'55%'} ></Box>
-    <Box 
-      width='100%'
-      height='90%'
-      style={{ background: `linear-gradient(to bottom,
-        ${dBgColor} 50%,
-        rgba(0,0,0,.5) 100%)`,
-       }}
-      position='absolute'
-      top='0%'
+    <Box className='main-container' mt='7px' position={'relative'} height='100%'>
+      <Box w={'100%'} h={'55%'}></Box>
+      <Box
+        width='100%'
+        height='90%'
+        style={{
+          background: `linear-gradient(to bottom,
+        ${dBgColor} 0%,
+        rgba(0,0,0,.5) 70%)`,
+        }}
+        position='absolute'
+        top='0%'
+        borderRadius='8px'
       >
-      
-      <Flex position="relative" alignItems="center" color="white" p={10} mt={10}>
-        <Box 
-          position="absolute"
-          top={0}
-          left={0}
-          width='100%'
-          height='100%'
-          style={{ background: `-webkit-gradient(linear,left top,left bottom,from(transparent),to(rgba(0,0,0,.2))), ${bgColor}`}}
-        />
-        
-        <Box ml={4} maxW="300px" minW="100px" shadow="dark-lg" zIndex={9999} backgroundColor='transparent'>
-            <Image id='music_img' src={selectedImage} w="100%" />
-        </Box>
-
-        <Box ml={4}>
-            <Text className="font_white" fontWeight="bold" fontSize="xl" style={{ wordWrap: "break-word"}}>
-                {selectedMusic.title}
-            </Text>
-            <Text className='font_gray' fontSize="sm" style={{ wordWrap: "break-word"}}>{selectedMusic.artist}</Text>
-        </Box>
-      </Flex>
-
-
         <Box>
+          <Flex position="relative" alignItems="center" color="white" p={10} mt={10}>
+            <Box
+              position="absolute"
+              top={0}
+              left={0}
+              width='100%'
+              height='95%'
+              style={{ background: `-webkit-gradient(linear,left top,left bottom,from(transparent),to(rgba(0,0,0,.5))), ${bgColor}` }}
+            >
+            </Box>
+
+            <Box ml={-3} shadow="dark-lg" zIndex={9999} backgroundColor='transparent'>
+              <Image id='music_img' src={selectedMusic.img} maxH='232px' minH='232px' maxW="302px" />
+            </Box>
+
+
+
+            {/* <Box ml={4} shadow="dark-lg" zIndex={9999} backgroundColor='transparent' aspectRatio={1}>
+          <Image id='music_img' src={selectedImage} w="100%" h="100%" objectFit="cover" />
+        </Box> */}
+
+            <Box ml={4} zIndex="9999">
+              <Text className="font_white" fontWeight="bold" fontSize="60px" style={{ wordWrap: "break-word" }}>
+                {selectedMusic.title}
+              </Text>
+              <Text className='font_gray' fontSize="sm" style={{ wordWrap: "break-word" }}>{selectedMusic.artist}</Text>
+              <Box zIndex="9999" >
+                {
+                  playingMusic !== selectedMusic ? <></> :
+                    <MusicVisualizer width={300} height={100} color={bgColor}></MusicVisualizer>
+                }
+              </Box>
+            </Box>
+
+          </Flex>
+
+
+        </Box>
+
+
+        <Box ml="20px">
           {playingMusic == selectedMusic && isPlaying ? (
             <Button w={50} h={50} m={2} mb={10} onClick={handlePlayMusic} colorScheme='gray' style={{ borderRadius: "100%" }}>
-              <FontAwesomeIcon icon={faPause} size="xl" className="pulse-slow-animation"/>
+              <FontAwesomeIcon icon={faPause} size="xl" className="pulse-slow-animation" color={bgColor} />
               {/* className="slow-bounce-animation" */}
             </Button>
           ) : (
             <Button w={50} h={50} m={2} mb={10} onClick={handlePlayMusic} colorScheme='blue' style={{ borderRadius: "100%" }}>
-              <FontAwesomeIcon icon={faPlay} size='xl' className='move-animation'/>
+              <FontAwesomeIcon icon={faPlay} size='xl' className='move-animation' />
             </Button>
           )}
           {/* <MusicVisualizer width={'100%'} height={100}></MusicVisualizer> */}
         </Box>
 
-        <Sketch analyser={playingMusic ? playingMusic.analyserNode : null} />
-
-
         {playlistData.tracks.map((track, index) => (
-        <Flex  ml={5} key={index} alignItems="center" mb={2} w="80%" className='playListMusicsItem'       
-        _hover={{
-            cursor: "pointer",
-            filter: "blur(0.4px)",
-          }}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-        {isHovered && (
-            <Box
-            position="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-            
-            >
-              <FontAwesomeIcon icon={faPlay} size='lg' beat/>
-            </Box>
-        )}
-          <Image src={track.imageUrl} alt={track.title} boxSize="60px" />
-          <Box ml={2}>
-            <Text className='font_white' fontWeight="bold">{track.title}</Text>
-            <Text className='font_gray' fontSize="sm">{track.artist}</Text>
-          </Box>
-          <Button
-            ml="auto"
-            rightIcon={<FontAwesomeIcon icon={faPlay}/>}
-            colorScheme="purple"
-            variant="ghost"
-            size="sm"
-            onClick={handlePlayMusic}
+          <Flex ml={5} key={index} alignItems="center" mb={2} w="80%" className='playListMusicsItem'
+            _hover={{
+              cursor: "pointer",
+              filter: "blur(0.4px)",
+            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
-            Play
-          </Button>
-        </Flex>
-      ))}
+
+            <Image src={track.imageUrl} alt={track.title} boxSize="60px" />
+            <Box ml={2}>
+              <Text className='font_white' fontWeight="bold">{track.title}</Text>
+              <Text className='font_gray' fontSize="sm">{track.artist}</Text>
+            </Box>
+            <Button
+              ml="auto"
+              rightIcon={<FontAwesomeIcon icon={faPlay} />}
+              colorScheme="purple"
+              variant="ghost"
+              size="sm"
+              onClick={handlePlayMusic}
+            >
+              Play
+            </Button>
+          </Flex>
+        ))}
+      </Box>
     </Box>
-</Box>
-    
+
   );
 };
 

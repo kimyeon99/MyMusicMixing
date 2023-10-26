@@ -8,39 +8,48 @@ import { usePlayList } from "./customs/usePlayList.js";
 import Sidebar from "./Sidebar.js";
 import TrackList from "./TrackList.js";
 import SideMusic from "./SideMusic.js";
-import { Box, Center, Heading  } from "@chakra-ui/react";
+import { Box, Center, Heading } from "@chakra-ui/react";
 import { useAuth } from "./customs/useAuth.js";
 
+const Main = () => {
+  const [songs, setSongs] = useState([]);
+  const { isSideMusic } = usePlayList();
+  const [mostViewedMusicList, setMostViewedMusicList] = useState([]);
+  const { user } = useAuth();
 
-  const Main = () => {
-    const [songs, setSongs] = useState([]);
-    const {isSideMusic} = usePlayList();
-    const {user} = useAuth();
-    
   useEffect(() => {
     handleGetMusicList();
+    handleGetMostViewedMusicList();
   }, []);
 
-  async function handleGetMusicList(){
+  async function handleGetMusicList() {
     const res = await axios.get('http://localhost:4000/music');
     const musiclist = res.data;
-    console.log('musiclist: ' + JSON.stringify(musiclist.data));
     setSongs(musiclist);
   }
 
+  async function handleGetMostViewedMusicList() {
+    axios.get('http://localhost:4000/music/hello')
+      .then(res => {
+        console.log(res.data);
+        setMostViewedMusicList(res.data);
+      });
+  }
+
   return (
-    <Box className="App">
-      <Sidebar/>
-      <MusicPlayer/>
-      <Box className="main-container">
-        <Box className="istyle">
-          <Slideshow ></Slideshow> 
-          <TrackList ></TrackList>
-          <Box><Heading pl="20px" pb={1} fontSize={28} color={"gray.300"}>Musics</Heading></Box>
-          <MusicList songs={songs}></MusicList>
+    <Box>
+      <div className="App">
+        <Sidebar />
+        <MusicPlayer />
+        <Box className="main-container">
+          <Box className="istyle">
+            <MusicList songs={songs}></MusicList>
+            <Slideshow mostViewedMusicList={mostViewedMusicList}></Slideshow>
+            <TrackList ></TrackList>
+          </Box>
         </Box>
-      </Box>
-      <SideMusic></SideMusic>
+        <SideMusic></SideMusic>
+      </div>
     </Box>
   );
 };
