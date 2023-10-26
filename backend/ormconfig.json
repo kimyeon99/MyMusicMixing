@@ -5,7 +5,6 @@
     "username": "root",
     "password": "1214",
     "database": "MMM",
-    "entities": ["dist/**/*.entity{.ts,.js}"],
-    "migrations": ["dist/migration/*{.ts,.js}"]
+    "entities": ["dist/**/*.entity{.ts,.js}"]
  }
   

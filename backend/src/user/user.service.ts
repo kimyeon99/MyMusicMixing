@@ -19,6 +19,7 @@ export class UserService {
 
   private logger: Logger = new Logger('AppGateway');
 
+
   async findAll(): Promise<User[]> {
     return this.userRepository.find();
   }

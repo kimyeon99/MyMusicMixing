@@ -15,6 +15,9 @@ export class Music {
   @Column()
   url: string;
 
+  @Column({ default: null })
+  img: string;
+
   @Column({ default: 0 })
   view: number;
 
