@@ -15,7 +15,7 @@ export class MusicController {
         return await this.musicService.increaseView(id);
     }
 
-    @Get('hello')
+    @Get('mostViewed')
     async getMostViewedMusicList() {
         return await this.musicService.getMostViewedMusicList();
     }

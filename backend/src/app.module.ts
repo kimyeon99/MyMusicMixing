@@ -16,6 +16,7 @@ import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { User } from './entify/user.entify';
+import { PlaylistItem } from './entify/playlistItem.entity';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { User } from './entify/user.entify';
       username: 'root',
       password: '1214',
       database: 'MMM',
-      entities: [Music, Playlist, User],
+      entities: [Music, Playlist, PlaylistItem, User],
       synchronize: false,
       migrations: ["dist/migrations/*{.ts,.js}"], // migration 수행할 파일
       migrationsTableName: "migrations" // migration 내용이 기록될 테이블명(default = migration)

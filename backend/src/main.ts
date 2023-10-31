@@ -17,8 +17,9 @@ async function bootstrap() {
     credentials: true, // 필요한 경우 쿠키와 인증 정보를 전송
   });
 
-  // const musicService = app.get(MusicService);
+  const musicService = app.get(MusicService);
   // await musicService.uploadFiles('../frontend/src/musics');
+  // await musicService.saveImgInDB('../frontend/public/img');
 
   // const playlistService = app.get(PlaylistService);
   // await playlistService.createPlaylist("A");
