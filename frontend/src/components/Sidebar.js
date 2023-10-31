@@ -6,11 +6,22 @@ import { faAngleUp, faHome, faPauseCircle, faUpDown } from '@fortawesome/free-so
 import {motion} from 'framer-motion';
 import '../css/font.css';
 import { useAuth } from './customs/useAuth';
+import PlaylistModal from './Modals/PlaylistModal.js';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
 
 const Sidebar = () => {
   const {user} = useAuth();
   const menu = useDisclosure();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  function onOpen(){
+    setIsModalOpen(true);
+  }
+
+  function onClose(){
+    setIsModalOpen(false);
+  }
 
   return (
       <Box className="sidebar">
@@ -34,7 +45,8 @@ const Sidebar = () => {
           <Box className='sideMenu'>
             <Text className='font_white'>Create own playlist</Text>
             <Text className='font_gray'>It's simple</Text>
-            <Button size={'sm'}>Create</Button>
+            <Button size={'sm'} onClick={onOpen}>Create</Button>
+            <PlaylistModal onClose={onClose} isModalOpen={isModalOpen}></PlaylistModal>
           </Box>
           <Box className='sideMenu'>
             <Text className='font_white'>Record</Text>
@@ -42,7 +54,7 @@ const Sidebar = () => {
             <Button size={'sm'}>Look</Button>
           </Box>
         </Box>
-        <Box ml={5} mt={10}>
+        <Box ml={5} mt={100}>
           {user ? 
             <Menu {...menu}>
               <MenuButton as={Button} rightIcon={menu.isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />} colorScheme="yellow" mt="100px">

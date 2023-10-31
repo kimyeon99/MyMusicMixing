@@ -12,7 +12,6 @@ export function MusicEffectProvider({ children }) {
     const { soundRef } = usePlayList();
     const [selectedEffect, setSeletedEffect] = useState('');
 
-
     function changeReverb() {
         const reverb = new Pizzicato.Effects.Reverb({
             time: 0.5,
@@ -52,10 +51,17 @@ export function MusicEffectProvider({ children }) {
         soundRef.current.addEffect(distortion);
     }
 
+    function changePan(){
+        const pan = new Pizzicato.Effects.Distortion({
+            pan: 0.5
+        })
+
+        soundRef.current.addEffect(pan);
+    }
+
     return (
         <MusicEffect.Provider value={{
-            changeReverb,
-            changeDelay, changeChorus, changeDistortion
+            changeReverb, changeDelay, changeChorus, changeDistortion, changePan
         }}>
             {children}
         </MusicEffect.Provider>

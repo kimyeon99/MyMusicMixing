@@ -70,7 +70,7 @@ export default SideMusic;
 
 
 const Equalizers = () => {
-    const { changeReverb, changeDelay, changeChorus, changeDistortion } = useMusicEffect();
+    const { changePan, changeReverb, changeDelay, changeChorus, changeDistortion } = useMusicEffect();
 
     return (
         <Box>
@@ -79,6 +79,8 @@ const Equalizers = () => {
                 <Button onClick={changeReverb}>Concert</Button>
                 <Button onClick={changeDelay}>Delay</Button>
                 <Button onClick={changeDistortion}>Distortion</Button>
+                <Button onClick={changePan}>Pan</Button>
+                
             </Flex>
             <Flex gap={3} w={"100%"} flexWrap={wrap}>
                 {/* <Button onClick={changeChorus}>Chorus</Button> */}

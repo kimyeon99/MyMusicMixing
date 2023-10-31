@@ -29,7 +29,7 @@ const Main = () => {
   }
 
   async function handleGetMostViewedMusicList() {
-    axios.get('http://localhost:4000/music/hello')
+    axios.get('http://localhost:4000/music/mostViewed')
       .then(res => {
         console.log(res.data);
         setMostViewedMusicList(res.data);

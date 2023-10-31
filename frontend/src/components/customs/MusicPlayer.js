@@ -3,7 +3,7 @@ import '../../css/MusicPlayer.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faStepForward, faStepBackward, faForwardStep } from '@fortawesome/free-solid-svg-icons';
 import { usePlayList } from './usePlayList';
-import { Box, Center, Flex, Heading, Input, Slider, SliderFilledTrack, SliderThumb, SliderTrack } from '@chakra-ui/react';
+import { Box, Center, ColorModeContext, Flex, Heading, Input, Slider, SliderFilledTrack, SliderThumb, SliderTrack } from '@chakra-ui/react';
 import { color } from 'framer-motion';
 
 const MusicPlayer = () => {
