@@ -27,12 +27,10 @@ export class PlaylistService {
       try{
         playList = await this.playlistRepository.find({
           where: { user: { id: userId } },
-          relations: ['user']
         });
       }catch(err){
         return false;
       }
-      this.logger.log('playlist:' + playList);
       return playList;
     }
 
@@ -49,15 +47,47 @@ export class PlaylistService {
       // PlaylistItem 생성 및 저장
       for (const item of currentPlaylist.currentMusics) {
           const playlistItem = new PlaylistItem();
-          playlistItem.musicId = item.musicId;
-          playlistItem.playlistId = currentPlaylist.currentIndex;
+          playlistItem.musicId = item.id;
+          playlistItem.playlistId = playlist.id;
           await this.playlistItemRepository.save(playlistItem);  // PlaylistItem 저장
       }      
     }catch(err){
       console.error(err);
     }
  
+    }
+
+    async savePlaylist(currentPlaylist, savePoint): Promise<any>{
+      try{
+          // 기존의 PlaylistItem 삭제
+          const oldItems = await this.playlistItemRepository.find({where:{playlistId: savePoint}});
+          if(oldItems.length > 0){
+              for(const oldItem of oldItems){
+                  await this.playlistItemRepository.delete(oldItem.id);
+              }
+          }
+  
+          // PlaylistItem 생성 및 저장
+          for (const item of currentPlaylist.currentMusics) {
+              const playlistItem = new PlaylistItem();
+              playlistItem.musicId = item.id;
+              playlistItem.playlistId = savePoint;
+              await this.playlistItemRepository.save(playlistItem);  // PlaylistItem 저장
+          }
+      }catch(err){
+          console.error(err);
+      }
   }
+  
+
+    async getSelectedPlaylistMusics(playlist){
+      const selectedPlaylistItems = await this.playlistItemRepository.find({ where:{playlistId: playlist.id }});
+      this.logger.log(`selectedPlaylistItems`+ selectedPlaylistItems);
+      const musicIds = selectedPlaylistItems.map(item => item.musicId); // musicId만 추출
+      this.logger.log(`musicIds`+ musicIds);
+      return musicIds;
+    }
+  
   
 
     // async addMusicToPlaylist(playlistId: number, musicId: number): Promise<Playlist> {

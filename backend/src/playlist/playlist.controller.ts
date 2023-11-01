@@ -22,6 +22,11 @@ export class PlaylistController {
         return await this.playlistService.getByUserId(userId);
     }
 
+    @Get(':playlistId/selected')
+    async getSelectedPlaylistMusics(@Param('playlistId') playlistId: number): Promise<any>{
+        return await this.playlistService.getSelectedPlaylistMusics(playlistId);
+    }
+
     @Post(':userId')
     async createUserPlaylist(@Param('userId') userId: number, @Body() currentPlaylist: PlaylistDto): Promise<any>{
         await this.playlistService.createPlaylist(userId, currentPlaylist);
