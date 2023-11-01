@@ -14,6 +14,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
     const [songs, setSongs] = useState([]);
     const [inputValue, setInputValue] = useState("");
     const [addState, setAddState] = useState(false);
+    const [savePoint, setSavePoint] = useState(0);
 
     const {user} = useAuth();
     const toast = useToast();
@@ -38,9 +39,9 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
     async function handleGetPlaylist(userId) {
         const res = await axios.get(`http://localhost:4000/playlist/${userId}`);
         const be_playlists = res.data;
-        console.log(`be_playlists ${JSON.stringify(be_playlists)}`);
         if(be_playlists){
             setPlaylists(be_playlists);
+            setCurrentPlaylistIndex(playlists.length);
         }else{
             setPlaylists([]);
         }
@@ -103,12 +104,12 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
             };
             setCurrentPlaylist(newPlaylist);
         
-            showCompleteToast('music');
+            showToast('music');
         }
   
     }
     
-    function showCompleteToast(type){
+    function showToast(type){
         switch(type){
             case 'music':
                 return toast({
@@ -118,7 +119,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                     duration: 1500,
                     isClosable: true,
                 })
-            case 'playlist':
+            case 'createPlaylist':
                 return toast({
                     position: "top-left",
                     title: "プレイリスト追加完了",
@@ -126,11 +127,18 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                     duration: 3000,
                     isClosable: true,
                 })
+            case 'savePlaylist':
+              return toast({
+                  position: "top-left",
+                  title: "プレイリスト変更完了",
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+              })
         }
     }
 
     function addPlaylist(title){
-        setCurrentPlaylistIndex(0);
         const newPlaylist = {
             name: title,
             currentIndex: currentPlaylistIndex,
@@ -139,6 +147,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
         if(playlists.length >= 1){
             setPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]);
         }else{
+            setCurrentPlaylistIndex(0);
             setPlaylists([newPlaylist]);
         }
         setCurrentPlaylist(newPlaylist);
@@ -146,13 +155,49 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
         setAddState(false);
     }
     
-    
+    async function createPlaylist(currentPlaylist){
+        const res = axios.post(`http://localhost:4000/playlist/${user.userId}`, currentPlaylist).
+          then(() => {
+            showToast('createPlaylist');
+            onClose();
+            resetModal();
+          }).catch((err) => {
 
-    async function savePlaylist(currentPlaylist){
-        const res = await axios.post(`http://localhost:4000/playlist/${user.userId}`, currentPlaylist);
-        console.log(res);
-        showCompleteToast('playlist');
-        onClose();
+          });
+    }
+
+    async function savePlaylist(){
+      const res = axios.post(`http://localhost:4000/playlist/${user.userId}`, [currentPlaylist, savePoint]).
+        then(() => {
+          showToast('savePlaylist');
+          onClose();
+      }).catch((err)=>{
+
+      });
+    }
+
+    async function getSelectedPlaylist(playlist){
+      const res = await axios.get(`http://localhost:4000/playlist/${playlist.id}/selected`);
+      
+      const selectedPlaylistMusics = res.data.map(id => songs.find(song => song.id === id));
+      
+      const newPlaylist = {
+        name: playlist.name,
+        currentIndex: currentPlaylistIndex,
+        currentMusics: selectedPlaylistMusics,
+      };
+      setSavePoint(playlist.id);
+      setCurrentPlaylist(newPlaylist);
+    }
+
+    function resetModal(){
+      setCurrentPlaylist(null);
+      setCurrentPlaylistIndex(0);
+      setCurrentPlaylistMusics([]);
+      setSongs([]);
+      setInputValue("");
+      setAddState(false);
+      setSavePoint(0);
     }
 
     // function addMusicToCurrentPlaylist(musicInfo){
@@ -175,8 +220,8 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
             <ModalOverlay />
             <ModalContent bg="blackAlpha.900">
               <ModalHeader>
-                <Box className="font_white">{currentPlaylist ? <Heading>プレイリスト{currentPlaylist.name}</Heading> : ""}</Box>
-                <Box className="font_white">{playlists.length > 0 ? <Heading bgGradient="linear(to-l, #7928CA,#FF0080)" bgClip="text" fontSize="6xl" fontWeight="extrabold">{user.username}のプレイリスト</Heading> : <></>}</Box>
+                <Box className="font_white">{playlists.length > 0 ? <Heading bgGradient="linear(to-l, #7928CA,#FF0080)" bgClip="text" fontSize="5xl" fontWeight="extrabold">{user.username}のプレイリスト</Heading> : <></>}</Box>
+              <Box className="font_white">{currentPlaylist ? <Heading>{currentPlaylist.name}</Heading> : ""}</Box>
               </ModalHeader>
               <ModalCloseButton />
               <ModalBody>
@@ -236,7 +281,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                                             w="250px"
                                             h="80px"
                                         >
-                                            <Flex alignItems='center' justifyContent='center' h="100%">
+                                            <Flex alignItems='center' justifyContent='center' h="100%" onClick={() => getSelectedPlaylist(playlist)}>
                                                 <Text fontSize={'21px'} className="font_white">{playlist.name}</Text>
                                             </Flex>
                                         </Box>
@@ -324,7 +369,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
               </ModalBody>
     
               <ModalFooter>
-                <Button onClick={() => savePlaylist(currentPlaylist)} colorScheme="green" mr={3}>
+                <Button onClick={() => createPlaylist(currentPlaylist)} colorScheme="green" mr={3}>
                   Save
                 </Button>
                 <Button onClick={onClose} colorScheme="blue">
