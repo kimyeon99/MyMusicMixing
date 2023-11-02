@@ -57,10 +57,10 @@ export class PlaylistService {
  
     }
 
-    async savePlaylist(currentPlaylist, savePoint): Promise<any>{
+    async savePlaylist(playlistId, currentPlaylist): Promise<any>{
       try{
           // 기존의 PlaylistItem 삭제
-          const oldItems = await this.playlistItemRepository.find({where:{playlistId: savePoint}});
+          const oldItems = await this.playlistItemRepository.find({where:{playlistId: playlistId}});
           if(oldItems.length > 0){
               for(const oldItem of oldItems){
                   await this.playlistItemRepository.delete(oldItem.id);
@@ -71,18 +71,19 @@ export class PlaylistService {
           for (const item of currentPlaylist.currentMusics) {
               const playlistItem = new PlaylistItem();
               playlistItem.musicId = item.id;
-              playlistItem.playlistId = savePoint;
+              playlistItem.playlistId = playlistId;
               await this.playlistItemRepository.save(playlistItem);  // PlaylistItem 저장
           }
       }catch(err){
           console.error(err);
       }
-  }
+    }
   
 
-    async getSelectedPlaylistMusics(playlist){
-      const selectedPlaylistItems = await this.playlistItemRepository.find({ where:{playlistId: playlist.id }});
-      this.logger.log(`selectedPlaylistItems`+ selectedPlaylistItems);
+    async getSelectedPlaylistMusics(fe_playlistId){
+      const selectedPlaylistItems = await this.playlistItemRepository.find({ where:{playlistId: fe_playlistId }});
+      this.logger.log(`fe_playlistId`+ JSON.stringify(fe_playlistId));
+      this.logger.log(`selectedPlaylistItems`+ JSON.stringify(selectedPlaylistItems));
       const musicIds = selectedPlaylistItems.map(item => item.musicId); // musicId만 추출
       this.logger.log(`musicIds`+ musicIds);
       return musicIds;

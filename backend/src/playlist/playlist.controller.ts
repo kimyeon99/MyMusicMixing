@@ -1,6 +1,11 @@
-import { Body, Controller, Get, Param, Post, } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, } from '@nestjs/common';
 import { PlaylistService } from './playlist.service';
 import { Playlist } from 'src/entify/playlist.entity';
+
+export class CreatePlaylistDto {
+    userId: number;
+    currentPlaylist: PlaylistDto;
+  }
 
 interface PlaylistDto {
     name: string;
@@ -27,9 +32,18 @@ export class PlaylistController {
         return await this.playlistService.getSelectedPlaylistMusics(playlistId);
     }
 
-    @Post(':userId')
-    async createUserPlaylist(@Param('userId') userId: number, @Body() currentPlaylist: PlaylistDto): Promise<any>{
+    @Post('')
+    async createUserPlaylist(@Body() createPlaylistDto: CreatePlaylistDto): Promise<any>{
+        const { userId, currentPlaylist } = createPlaylistDto;
         await this.playlistService.createPlaylist(userId, currentPlaylist);
         return {message: "success"};
     }
+
+    @Patch(':savePoint')
+    async savePlaylist(@Param('savePoint') playlistId: number, @Body() currentPlaylist: PlaylistDto): Promise<any>{
+        await this.playlistService.savePlaylist(playlistId, currentPlaylist);
+        return {message: "success"};
+    }
+
+    
 }
