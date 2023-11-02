@@ -72,7 +72,7 @@ const MusicList = ({ songs }) => {
                 className='carousel'
             >
                 {songs.map((song, index) =>
-                    <Box className="song" onClick={() => handlePlayMusic(song)}>
+                    <Box key={song} className="song" onClick={() => handlePlayMusic(song)}>
                         <Image src={song.img} alt={`Album ${index + 1}`} className="album-image" />
                         <Heading fontSize='16px' mt={3} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" width="calc(90%)" color='white'>{song.title}</Heading>
                         <Text fontSize='14px' mt={1} overflow="hidden" textOverflow="ellipsis" whiteSpace="wrap" width="calc(90%)" color={'whiteAlpha.600'}>{song.artist}</Text>

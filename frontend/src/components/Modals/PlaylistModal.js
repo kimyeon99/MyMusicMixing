@@ -156,7 +156,10 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
     }
     
     async function createPlaylist(currentPlaylist){
-        const res = axios.post(`http://localhost:4000/playlist/${user.userId}`, currentPlaylist).
+        const res = await axios.post(`http://localhost:4000/playlist`, {
+          userId: user.userId, 
+          currentPlaylist: currentPlaylist
+        }).
           then(() => {
             showToast('createPlaylist');
             onClose();
@@ -167,10 +170,12 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
     }
 
     async function savePlaylist(){
-      const res = axios.post(`http://localhost:4000/playlist/${user.userId}`, [currentPlaylist, savePoint]).
+      console.log('saveP'+savePoint);
+      const res = await axios.patch(`http://localhost:4000/playlist/${savePoint}`, currentPlaylist).
         then(() => {
           showToast('savePlaylist');
           onClose();
+          resetModal();
       }).catch((err)=>{
 
       });
@@ -178,7 +183,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
 
     async function getSelectedPlaylist(playlist){
       const res = await axios.get(`http://localhost:4000/playlist/${playlist.id}/selected`);
-      
+      console.log('resres' + JSON.stringify(res));
       const selectedPlaylistMusics = res.data.map(id => songs.find(song => song.id === id));
       
       const newPlaylist = {
@@ -216,12 +221,12 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
     
     return (
         <Box>
-          <Modal size="2xl" isOpen={isModalOpen} onClose={onClose}>
+          <Modal size="3xl" isOpen={isModalOpen} onClose={onClose} scrollBehavior="inside">
             <ModalOverlay />
             <ModalContent bg="blackAlpha.900">
               <ModalHeader>
                 <Box className="font_white">{playlists.length > 0 ? <Heading bgGradient="linear(to-l, #7928CA,#FF0080)" bgClip="text" fontSize="5xl" fontWeight="extrabold">{user.username}のプレイリスト</Heading> : <></>}</Box>
-              <Box className="font_white">{currentPlaylist ? <Heading>{currentPlaylist.name}</Heading> : ""}</Box>
+              <Box  className="font_white">{currentPlaylist ? <Heading>{currentPlaylist.name}</Heading> : ""} <Button onClick={resetModal}>뒤로</Button></Box>
               </ModalHeader>
               <ModalCloseButton />
               <ModalBody>
@@ -240,13 +245,14 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                             borderRadius: "4px",
                         }}
                     >
-                        <Box w="260px" h="400px" pr="5px" overflowY="auto">
+                        <Box w="260px" h="330px" pr="5px" overflowY="auto">
                             <Center>
                                 <Box>
                                 {currentPlaylist ? (
                                 currentPlaylist.currentMusics.map((music, index) => (
-                            <Draggable key={music.id} draggableId={`music-${music.id}`} index={index}>
-                            {(provided) => (
+                                  <Box>
+                              <Draggable key={`selected-${music.id}-${index}`} draggableId={`music-${music.id}`} index={index}>
+                              {(provided) => (
                                 <Box
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
@@ -261,12 +267,13 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                                 >
                                 <Text className="font_white">{music.title}</Text>
                                 </Box>
-                            )}
-                            </Draggable>
+                              )}
+                              </Draggable>
+                            </Box>
                         ))
                         ) : playlists.length ? (
                             playlists.map((playlist, index) => (
-                                <Draggable key={playlist.name} draggableId={`playlist-${playlist.name}`} index={index}>
+                                <Draggable key={`${playlist.name}`} draggableId={`playlist-${playlist.name}`} index={index}>
                                     {(provided) => (
                                         <Box
                                             ref={provided.innerRef}
@@ -328,7 +335,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                             borderRadius: "4px",
                           }}
                         >
-                          <Box w="250px" h="400px" pr='10px' overflowY="auto">
+                          <Box w="250px" h="330px" pr='10px' overflowY="auto">
                             {currentPlaylist ? (
                               songs.map((song, index) => (
                                 <Draggable
@@ -369,9 +376,14 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
               </ModalBody>
     
               <ModalFooter>
-                <Button onClick={() => createPlaylist(currentPlaylist)} colorScheme="green" mr={3}>
-                  Save
-                </Button>
+                {savePoint ?
+                  <Button onClick={() => savePlaylist(currentPlaylist)} colorScheme="green" mr={3}>
+                    save
+                  </Button>
+                  :
+                  <Button onClick={() => createPlaylist(currentPlaylist)} colorScheme="green" mr={3}>
+                    Create
+                  </Button>}
                 <Button onClick={onClose} colorScheme="blue">
                   Close
                 </Button>
