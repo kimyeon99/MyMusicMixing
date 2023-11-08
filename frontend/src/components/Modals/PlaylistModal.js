@@ -5,6 +5,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useAuth } from "../customs/useAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const PlaylistModal = ({onClose, isModalOpen}) => {
     const [playlists, setPlaylists] = useState([]);
@@ -21,12 +22,16 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
 
     const bg = useColorModeValue("gray.900", "gray.900");
     const color = useColorModeValue("white", "white");
-    
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(isModalOpen){
             handleGetMusicList();
-            handleGetPlaylist(user.userId);
+            if(user){
+              handleGetPlaylist(user.userId);
+            }else{
+              navigate('/login');
+            }
         }
     }, [isModalOpen]);
     
@@ -226,7 +231,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
             <ModalContent bg="blackAlpha.900">
               <ModalHeader>
                 <Box className="font_white">{playlists.length > 0 ? <Heading bgGradient="linear(to-l, #7928CA,#FF0080)" bgClip="text" fontSize="5xl" fontWeight="extrabold">{user.username}のプレイリスト</Heading> : <></>}</Box>
-              <Box  className="font_white">{currentPlaylist ? <Heading>{currentPlaylist.name}</Heading> : ""} <Button onClick={resetModal}>뒤로</Button></Box>
+              <Box  className="font_white">{currentPlaylist ? <Heading>{currentPlaylist.name}</Heading> : ""}</Box>
               </ModalHeader>
               <ModalCloseButton />
               <ModalBody>
@@ -272,13 +277,10 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                             </Box>
                         ))
                         ) : playlists.length ? (
+                          <Box>{
                             playlists.map((playlist, index) => (
-                                <Draggable key={`${playlist.name}`} draggableId={`playlist-${playlist.name}`} index={index}>
-                                    {(provided) => (
+                                <Box>
                                         <Box
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
                                             p="2"
                                             bg="gray.600" // 항목의 배경색을 조정
                                             color="white" // 항목의 텍스트 색상을 조정
@@ -292,12 +294,26 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                                                 <Text fontSize={'21px'} className="font_white">{playlist.name}</Text>
                                             </Flex>
                                         </Box>
-                                    )}
-                                </Draggable>
+                                </Box>
                             ))
+                            }
+                              <Button onClick={() => setAddState(true)} mb='10px'>Add</Button>
+                                        {addState && (
+                                            <Box color='white'>
+                                                <Input
+                                                    w="75%"
+                                                    placeholder="플레이리스트 이름"
+                                                    value={inputValue}
+                                                    onChange={(e) => setInputValue(e.target.value)}
+                                                />
+                                                <Button onClick={() => addPlaylist(inputValue)}>✔</Button>
+                                            </Box>
+                                        )}
+                          </Box>
                         ) : (
                             <Box>
-                                <Text className="font_white">No Playlist</Text>
+                                <Heading className="font_white" bgGradient="linear(to-l, #7928CA,#FF0080)" bgClip="text" fontSize="4xl" fontWeight="extrabold">プレイリストがありません。</Heading>
+                                <Text className="font_white" >Addボタンで作りましょう。</Text>
                                 <Button onClick={() => setAddState(true)} mb='10px'>Add</Button>
                                 {addState && (
                                     <Box color='white'>
@@ -315,6 +331,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                         )}
                     </Box>
                 </Center>
+                
             </Box>
         </div>
         
@@ -384,7 +401,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                   <Button onClick={() => createPlaylist(currentPlaylist)} colorScheme="green" mr={3}>
                     Create
                   </Button>}
-                <Button onClick={onClose} colorScheme="blue">
+                <Button onClick={()=>{onClose(); resetModal();}} colorScheme="blue">
                   Close
                 </Button>
               </ModalFooter>

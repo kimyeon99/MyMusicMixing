@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import '../css/sidebar.css';
-import { Box, Button, Center, Flex, Heading, LinkBox, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, useDisclosure,  } from '@chakra-ui/react';
+import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Button, Center, Flex, Heading, LinkBox, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, useDisclosure,  } from '@chakra-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleUp, faHome, faPauseCircle, faUpDown } from '@fortawesome/free-solid-svg-icons';
 import {motion} from 'framer-motion';
@@ -9,11 +9,13 @@ import { useAuth } from './customs/useAuth';
 import PlaylistModal from './Modals/PlaylistModal.js';
 import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
+import axios from 'axios';
 
 const Sidebar = () => {
   const {user} = useAuth();
   const menu = useDisclosure();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [watchHistory, setWatchHistory] = useState([]);
 
   function onOpen(){
     setIsModalOpen(true);
@@ -22,6 +24,14 @@ const Sidebar = () => {
   function onClose(){
     setIsModalOpen(false);
   }
+
+  async function getWatchHistory(){
+    const res = await axios.get(`http://localhost:4000/watch-history/${user.userId}`);
+    console.log('getWatchHistory' + JSON.stringify(res.data));
+    return setWatchHistory(res.data);
+  }
+
+  
 
   return (
       <Box className="sidebar">
@@ -48,10 +58,25 @@ const Sidebar = () => {
             <Button size={'sm'} onClick={onOpen}>Create</Button>
             <PlaylistModal onClose={onClose} isModalOpen={isModalOpen}></PlaylistModal>
           </Box>
+          
           <Box className='sideMenu'>
-            <Text className='font_white'>Record</Text>
-            <Text className='font_gray'>It's easy to look</Text>
-            <Button size={'sm'}>Look</Button>
+            <Accordion defaultIndex={[0]} allowMultiple>
+              <AccordionItem>
+                    <Heading className='font_white'>Record</Heading>
+                  
+                <AccordionButton pl='0' onClick={getWatchHistory}>
+                  <Button>
+                    Look
+                  </Button>
+                </AccordionButton>
+                
+                <AccordionPanel pb={4} className='font_gray' maxW='320px' w='100%'>
+                  {watchHistory.map((key, value) => {
+                   return <Text className='font_white' key={key}>{key.musicId}</Text>
+                  })}
+                </AccordionPanel>
+              </AccordionItem>
+            </Accordion>
           </Box>
         </Box>
         <Box ml={5} mt={100}>

@@ -13,6 +13,7 @@ import './css/sidebar.css';
 import Login from './pages/Login';
 import { useAuth } from './components/customs/useAuth';
 import authAxios from './components/customs/authAxios';
+import MypagePlaylist from './pages/Mypage.js/MypagePlaylist';
 
 const theme = extendTheme({
   fonts: {
@@ -23,6 +24,9 @@ const theme = extendTheme({
     body: '14px',
     heading: '16px',
   },
+  fontColor: {
+    body: 'white',
+  }
 });
 
 function App() {
@@ -50,6 +54,7 @@ function App() {
           <Route path="/" element={<Main/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/playlist/:musicId" element={<PlayList/>}></Route>
+          <Route path="/mypage/playlist" element={<MypagePlaylist/>}></Route>
         </Routes>
     </ChakraProvider>
   );
