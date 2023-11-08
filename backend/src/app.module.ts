@@ -17,6 +17,8 @@ import { UserService } from './user/user.service';
 import { UserModule } from './user/user.module';
 import { User } from './entify/user.entify';
 import { PlaylistItem } from './entify/playlistItem.entity';
+import { WatchHistory } from './entify/watchHistory.entity';
+import { WatchHistoryModule } from './watch-history/watch-history.module';
 
 @Module({
   imports: [
@@ -27,12 +29,11 @@ import { PlaylistItem } from './entify/playlistItem.entity';
       username: 'root',
       password: '1214',
       database: 'MMM',
-      entities: [Music, Playlist, PlaylistItem, User],
+      entities: [Music, Playlist, PlaylistItem, User, WatchHistory],
       synchronize: false,
-      migrations: ["dist/migrations/*{.ts,.js}"], // migration 수행할 파일
-      migrationsTableName: "migrations" // migration 내용이 기록될 테이블명(default = migration)
+      migrations: ["src/migrations/*{.ts,.js}"], // migration 수행할 파일
     }),
-    MusicModule, PlaylistModule, AuthModule, UserModule,
+    MusicModule, PlaylistModule, AuthModule, UserModule, WatchHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

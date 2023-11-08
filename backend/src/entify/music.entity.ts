@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, IntegerType } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, IntegerType, OneToMany } from 'typeorm';
 import { Playlist } from './playlist.entity';
+import { WatchHistory } from './watchHistory.entity';
 
 @Entity()
 export class Music {
@@ -20,6 +21,9 @@ export class Music {
 
   @Column({ default: 0 })
   view: number;
+
+  @OneToMany(() => WatchHistory, watchHistory => watchHistory.music)
+  watchHistories: WatchHistory[];
 
   // @ManyToMany(() => Playlist, (playlist) => playlist.musics)
   // playlists: Playlist[];
