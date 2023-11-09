@@ -1,8 +1,6 @@
 import { Box, Flex, Text, Image, Button, Icon, Circle, SkeletonCircle, Heading, Center } from '@chakra-ui/react';
 import { faCreditCard, faFighterJet, faPause, faPauseCircle, faPlane, faPlay, faPrayingHands, faRocket, faSpaceShuttle, faYinYang } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '../css/PlayListMusics.css'
-import "../css/Main.css"
 import { useEffect, useRef, useState } from 'react';
 import { usePlayList } from './customs/usePlayList';
 import baseImg2 from '../img/base_image2.jpg';
@@ -27,10 +25,14 @@ const PlayListMusics = ({ loading }) => {
   const [bgColor, setBgColor] = useState('');
   const [dBgColor, setDBgColor] = useState('');
   const [playTime, setPlayTime] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [lastImageUrl, setLastImageUrl] = useState(null); // 마지막 이미지 URL을 저장하는 상태 변수 추가
 
   useEffect(() => {
+    let img;
     if (!loading) {
-      const img = document.getElementById('music_img');
+      setImageLoaded(false);
+      img = document.getElementById('music_img');
       const colorThief = new ColorThief();
 
       const MaxBightness = 65;
@@ -39,10 +41,10 @@ const PlayListMusics = ({ loading }) => {
       const MinDarkbrightness = 40;
       // const Minbrightness = 40;
       // const MinDarkbrightness = 15;
-      img.onload = () => {
+
+      const handleImageLoad = () => {
         const color = colorThief.getColor(img);
         // setBgColor(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
-
         // ColorThief가 반환한 RGB 값
         const rgb = [color[0], color[1], color[2]];
 
@@ -67,8 +69,23 @@ const PlayListMusics = ({ loading }) => {
         // 1= 채도, 2 = 밝기
         setBgColor(`hsl(${hsl2[0]}, ${hsl2[1]}%, ${hsl2[2]}%)`);
         setDBgColor(`hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`);
+        setImageLoaded(true); // 이미지 로딩 완료 시 상태 업데이트
+        setLastImageUrl(selectedMusic.img); // 이미지 로딩 완료 시 마지막 이미지 URL 업데이트
+
+      }
+
+
+      img.onload = handleImageLoad;
+
+      if(img.complete && (selectedMusic.img != lastImageUrl)){
+        handleImageLoad();
       }
     };
+
+    return ()=>{
+      img.onload = null;
+    }
+
   }, [loading]);
 
   function brightness(rgb) {
@@ -124,21 +141,19 @@ const PlayListMusics = ({ loading }) => {
 
   function handlePlayMusic() {
     playToggleHandler();
-    if(user){
+    if(user && !isPlaying){
       setPlayTime(0); // 재생 시간 초기화
       addMusicToWatchHistory();
     }
   }
 
     function addMusicToWatchHistory() {
-      // 1초마다 재생 시간을 증가시킴
       const interval = setInterval(() => {
         setPlayTime((prevPlayTime) => prevPlayTime + 1);
       }, 1000);
     
       // 10초 후에 실행할 작업을 예약
       setTimeout(() => {
-        // 현재의 재생 시간을 확인
         setPlayTime((currentPlayTime) => {
           // 10초 이상 재생한 경우에만 시청 기록에 추가
           if (currentPlayTime >= 10) {

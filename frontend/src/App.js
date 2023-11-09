@@ -13,7 +13,11 @@ import './css/sidebar.css';
 import Login from './pages/Login';
 import { useAuth } from './components/customs/useAuth';
 import authAxios from './components/customs/authAxios';
-import MypagePlaylist from './pages/Mypage.js/MypagePlaylist';
+import MypagePlaylist from './pages/Mypage/MypagePlaylist';
+import WatchHistory from './pages/Mypage/WatchHistory';
+import SideMusic from './components/SideMusic';
+import './css/PlayListMusics.css'
+import "./css/Main.css"
 
 const theme = extendTheme({
   fonts: {
@@ -50,12 +54,18 @@ function App() {
 
   return (
     <ChakraProvider theme={theme}>
-        <Routes>
-          <Route path="/" element={<Main/>} />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/playlist/:musicId" element={<PlayList/>}></Route>
-          <Route path="/mypage/playlist" element={<MypagePlaylist/>}></Route>
-        </Routes>
+      <div className="App">
+          <Sidebar/>
+          <MusicPlayer />
+            <Routes>
+              <Route path="/" element={<Main/>} />
+              <Route path="/login" element={<Login/>} />
+              <Route path="/playlist/:musicId" element={<PlayList/>}></Route>
+              <Route path="/mypage/playlist" element={<MypagePlaylist/>}></Route>
+              <Route path="/mypage/watch-history" element={<WatchHistory/>}></Route>
+            </Routes>
+            <SideMusic></SideMusic>
+      </div>
     </ChakraProvider>
   );
 }

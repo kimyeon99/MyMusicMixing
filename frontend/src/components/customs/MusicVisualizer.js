@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { usePlayList } from "./usePlayList";
-import Pizzicato from 'pizzicato';
 import { color } from "framer-motion";
 
 const MusicVisualizer = ({ width, height }) => {

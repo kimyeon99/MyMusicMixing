@@ -9,6 +9,7 @@ import 'react-multi-carousel/lib/styles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faChevronLeft, faChevronRight, faCircleArrowRight, faCircleChevronLeft, faCircleChevronRight } from '@fortawesome/free-solid-svg-icons';
 import '../css/test.css';
+import "../css/Main.css"
 
 const MusicList = ({ songs }) => {
     const [currentSlide, setCurrentSlide] = useState(0);

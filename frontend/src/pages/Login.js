@@ -5,6 +5,7 @@ import '../css/Error.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../components/customs/useAuth";
 import authAxios from "../components/customs/authAxios";
+import styled from "@emotion/styled";
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -63,9 +64,13 @@ const Login = () => {
     }
 
     return (
-        <Center h="100vh">
-            <Box className="form-box" width="300px">
-                <Center><Heading as="h1" size="xl" color="teal.00" mb="3">Login</Heading></Center>
+        <Center ml='auto' mr='auto' h="100vh" w="100%"
+                style={{
+                    background:
+                        `-webkit-gradient(linear,left top,left bottom,from(transparent),to(rgba(0,0,0,.95))), #323232`
+                }}>
+            <Box className="form-box font_white" width="300px">
+                <Center><Heading as="h1" size="xl" color="teal.00" mb="3">ログイン</Heading></Center>
                 <p>UserName</p>
                 <Input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                 <p>Password</p>
@@ -81,6 +86,7 @@ const Login = () => {
                 </Center>
             </Box>
         </Center>
+
     );
 };
 

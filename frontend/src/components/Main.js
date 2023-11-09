@@ -1,5 +1,4 @@
 import Slideshow from "./Slideshow.js";
-import "../css/Main.css"
 import MusicList from "./MusicList.js";
 import MusicPlayer from "./customs/MusicPlayer.js";
 import axios from "axios";
@@ -37,10 +36,6 @@ const Main = () => {
   }
 
   return (
-    <Box>
-      <div className="App">
-        <Sidebar />
-        <MusicPlayer />
         <Box className="main-container">
           <Box className="istyle">
             <MusicList songs={songs}></MusicList>
@@ -48,9 +43,6 @@ const Main = () => {
             <TrackList ></TrackList>
           </Box>
         </Box>
-        <SideMusic></SideMusic>
-      </div>
-    </Box>
   );
 };
 

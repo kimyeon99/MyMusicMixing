@@ -4,12 +4,10 @@
   /* position: fixed;
   width: 20%;
   min-width: 150px;
-  
   z-index: 99999; */
   position: sticky;
   top: 0;
   padding: 7px;
-  height: 50%;
   min-width: 25%;
 }
 

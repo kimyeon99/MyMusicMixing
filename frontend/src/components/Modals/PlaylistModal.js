@@ -231,7 +231,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
             <ModalContent bg="blackAlpha.900">
               <ModalHeader>
                 <Box className="font_white">{playlists.length > 0 ? <Heading bgGradient="linear(to-l, #7928CA,#FF0080)" bgClip="text" fontSize="5xl" fontWeight="extrabold">{user.username}のプレイリスト</Heading> : <></>}</Box>
-              <Box  className="font_white">{currentPlaylist ? <Heading>{currentPlaylist.name}</Heading> : ""}</Box>
+                <Box className="font_white">{currentPlaylist ? <Heading>{currentPlaylist.name}</Heading> : ""}</Box>
               </ModalHeader>
               <ModalCloseButton />
               <ModalBody>

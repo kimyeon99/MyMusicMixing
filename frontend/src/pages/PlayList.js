@@ -35,26 +35,23 @@ const PlayList = () => {
   }, [musicId]);
 
   return (
-    <Box>{
-      loading ? <Center><Spinner
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="blue.500"
-        size="xl"
-        justifyContent='center'
-      />
+    loading ? (
+      <Center>
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+          justifyContent='center'
+        />
         <h1 color="black">{loading}</h1>
-      </Center> :
-        <div className="App">
-          <Sidebar />
-          <MusicPlayer />
-          <PlayListMusics loading={loading} style={{ width: '100%' }}></PlayListMusics>
-          <SideMusic></SideMusic>
-        </div>
-    }
-    </Box>
+      </Center>
+    ) : (
+      <PlayListMusics loading={loading} style={{ width: '100%' }} />
+    )
   );
+  
 }
 
 export default PlayList;
