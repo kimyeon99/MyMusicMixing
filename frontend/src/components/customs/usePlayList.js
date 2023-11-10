@@ -48,6 +48,16 @@ export function PlayListProvider({ children }) {
     if (!playingMusic || playingMusic !== selectedMusic) {
       createNewSound();
     } else {
+      console.log(`playingMusic` +JSON.stringify(playingMusic) +'selectedMusic' +selectedMusic)
+      playToggleMusicPlayer();
+    }
+  }
+
+  function playToggleMini(){
+    // playingMusic이 null인 경우 또는 선택된 음악과 현재 재생 중인 음악이 다른 경우
+    if (!playingMusic || playingMusic !== selectedMusic) {
+      createNewSound();
+    } else {
       playToggleMusicPlayer();
     }
   }

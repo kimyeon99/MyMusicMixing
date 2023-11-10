@@ -1,16 +1,23 @@
 import { Box, Image, Text, Flex } from "@chakra-ui/react";
+import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import '../css/MusicItem.css'
 
-
-// 여러 컴포넌트에서 공통으로 쓰일 musicItem 구상.
-const MusicItem = ({ img, title, artist, date }) => {
+const MusicItem = ({ img, title, artist, date, view, count, handlePlayMusic }) => {
   return (
-    <Flex align="center" mb={4}>
-      <Image boxSize="100px" src={img} alt={title} mr={4} />
-      <Box>
-        <Text fontSize="lg" fontWeight="bold">{title}</Text>
-        <Text color="gray.500">{artist}</Text>
-        <Text fontSize="sm" color="gray.500">{date}</Text>
+    <Flex mb={4} className="music-item" position="relative">
+      <Image mr='5' boxSize="40px" src={img} alt={title} />
+      <Box className="play-icon">
+        <FontAwesomeIcon icon={faPlayCircle} size="2xl"/>
       </Box>
+      <Box>
+        <Text className="text-hover" fontSize="md" fontWeight="bold" isTruncated width='290px' mr='10px'>{title}</Text>
+        <Text fontSize="xs" color="gray.500">{count}回聞きました。</Text>
+      </Box>
+      
+      <Text fontSize="sm" className="font_gray" isTruncated width="250px" mr='30px'>{artist}</Text>
+      <Text fontSize="sm" className="font_gray" mr='30px'>{view} views</Text>
+      
     </Flex>
   );
 };

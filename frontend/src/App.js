@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/Sidebar/Sidebar';
 import Main from './components/Main';
 import Slideshow from './components/Slideshow';
 import { Route, Routes } from 'react-router-dom';

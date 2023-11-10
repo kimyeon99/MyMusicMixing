@@ -4,7 +4,7 @@ import MusicPlayer from "./customs/MusicPlayer.js";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { usePlayList } from "./customs/usePlayList.js";
-import Sidebar from "./Sidebar.js";
+import Sidebar from "./Sidebar/Sidebar.js";
 import TrackList from "./TrackList.js";
 import SideMusic from "./SideMusic.js";
 import { Box, Center, Heading } from "@chakra-ui/react";

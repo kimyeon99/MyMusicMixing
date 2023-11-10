@@ -7,7 +7,7 @@ import axios from 'axios';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faChevronLeft, faChevronRight, faCircleArrowRight, faCircleChevronLeft, faCircleChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faChevronLeft, faChevronRight, faCircleArrowRight, faCircleChevronLeft, faCircleChevronRight, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import '../css/test.css';
 import "../css/Main.css"
 
@@ -62,8 +62,8 @@ const MusicList = ({ songs }) => {
             }}
         >
             <Box ml='10px'>
-                <button onClick={() => carouselRef.current.previous()} style={{ marginRight: '20px' }}><FontAwesomeIcon icon={faCircleChevronLeft} color='white' size='lg' /></button>
-                <button onClick={() => carouselRef.current.next()}><FontAwesomeIcon icon={faCircleChevronRight} color='white' size='lg' /></button>
+                <button onClick={() => carouselRef.current.previous()} style={{ marginRight: '20px' }}><FontAwesomeIcon icon={faCircleChevronLeft} color='white' size='xl' /></button>
+                <button onClick={() => carouselRef.current.next()}><FontAwesomeIcon icon={faCircleChevronRight} color='white' size='xl' /></button>
             </Box>
             <Heading mt='10px' ml='10px' fontSize={28} color={"white"}>Musics</Heading>
             <Carousel
@@ -71,10 +71,14 @@ const MusicList = ({ songs }) => {
                 arrows={false}
                 ref={carouselRef}
                 className='carousel'
+                draggable={false}
             >
                 {songs.map((song, index) =>
-                    <Box key={song} className="song" onClick={() => handlePlayMusic(song)}>
+                    <Box key={song} className="song musicItem" onClick={() => handlePlayMusic(song)}>
                         <Image src={song.img} alt={`Album ${index + 1}`} className="album-image" />
+                        <Box className="playIcon">
+                            <FontAwesomeIcon icon={faPlayCircle} size="2x" color='white'/>
+                        </Box>
                         <Heading fontSize='16px' mt={3} overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" width="calc(90%)" color='white'>{song.title}</Heading>
                         <Text fontSize='14px' mt={1} overflow="hidden" textOverflow="ellipsis" whiteSpace="wrap" width="calc(90%)" color={'whiteAlpha.600'}>{song.artist}</Text>
                     </Box>

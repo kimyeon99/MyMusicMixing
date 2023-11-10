@@ -1,6 +1,6 @@
 import { Box, Button, Center, Flex, Heading, Input, Text, useToast } from "@chakra-ui/react"
 import { useEffect, useState } from "react";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../../components/Sidebar/Sidebar";
 import axios from "axios";
 import { useAuth } from "../../components/customs/useAuth";
 

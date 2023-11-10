@@ -109,3 +109,27 @@
 .sidebar_1 h2{
   padding-left: 13px;
 }
+
+.musicItem .playIcon {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.musicItem:hover .playIcon {
+  opacity: 1;
+  transform: translateY(0%);
+}
+
+.musicItem:hover{
+  background-color: #363636;
+  transition: background-color 0.25s ease;
+  cursor: pointer;
+}
+
+.hover:hover{
+  text-decoration: underline;
+}

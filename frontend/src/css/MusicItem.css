@@ -1,0 +1,18 @@
+.music-item .play-icon{
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease;
+    position: absolute;
+    left:0.5%;
+    top:10%;
+}
+.music-item:hover .play-icon{
+    opacity: 1;
+    transform: translateY(0px);
+}
+.music-item:hover .text-hover{
+    text-decoration: underline;
+}
+.music-item{
+    cursor: pointer;
+}

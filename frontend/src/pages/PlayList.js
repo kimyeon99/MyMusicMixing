@@ -1,4 +1,4 @@
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/Sidebar/Sidebar.js";
 import PlayListMusics from "../components/PlayListMusics";
 import { usePlayList } from "../components/customs/usePlayList";
 import SideMusic from "../components/SideMusic.js";
