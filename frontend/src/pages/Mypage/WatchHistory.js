@@ -1,50 +1,51 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Progress } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../components/customs/useAuth";
 import MusicItem from "../../components/MusicItem";
 import { usePlayList } from "../../components/customs/usePlayList";
+import moment from 'moment';
+import useSWR from "swr";
+import authAxios from "../../components/customs/authAxios";
 
 const WatchHistory = () => {
-    const [watchHistoryMusics, setWatchHistoryMusics] = useState([]);
     const { selectedMusic, isPlaying, playingMusic, playToggleHandler, changeSelectedMusic } = usePlayList();
-    const {user} = useAuth();
+    const { user } = useAuth();
+    const { data: watchHistoryMusics, error, isLoading } = useSWR(
+        user ? `http://localhost:4000/watch-history/${user.userId}?getNumber=5` : null,
+    );
+    const [groupedMusics, setGroupedMusics] = useState([]);
 
-    useEffect(()=>{
-        if(user){
-            getWatchHistory();
-        }
-    }, [user])
-
-    async function getWatchHistory(){
-        const res = await axios.get(`http://localhost:4000/watch-history/${user.userId}?getNumber=5`);
-        console.log('setWatchHistoryMusics' + JSON.stringify(res.data));
-        return setWatchHistoryMusics(res.data);
-    }
-
-    function handlePlayMusic(music){
+    function handlePlayMusic(music) {
         changeSelectedMusic(music);
     }
 
     useEffect(() => {
-        if (selectedMusic) {
-            playToggleHandler();
+        if (watchHistoryMusics) {
+            const groupedData = watchHistoryMusics.reduce((acc, music) => {
+                const date = moment(music.lastWatched).format('YYYY-MM-DD');
+                if (!acc[date]) acc[date] = [];
+                acc[date].push(music);
+                return acc;
+            }, {});
+            setGroupedMusics(groupedData);
         }
-    }, [selectedMusic]);
+    }, [watchHistoryMusics]);
 
-    const groupedMusics = watchHistoryMusics.reduce((acc, music) => {
-        const date = music.lastWatched.split('T')[0];
-        if (!acc[date]) acc[date] = [];
-        acc[date].push(music);
-        return acc;
-    }, {});
+    if (isLoading || groupedMusics === null) {
+        return (
+        <Box className="font_white" ml="45px" pt="300px" textAlign="center" w='60%'>
+            <Progress size={"sm"} isIndeterminate colorScheme={"cyan"} bgGradient="linear(to-l, #7928CA,#FF0080)" h="14px"/>
+        </Box>          
+        )}
+
 
     return (
         <Box className="font_white" ml='45px' pt='100px'>
             <Box><Heading>視聴記録</Heading></Box>
-            
+
             {Object.keys(groupedMusics).map(date => {
-                const today = new Date().toISOString().split('T')[0];
+                const today = moment().format('YYYY-MM-DD');
                 const displayDate = date === today ? '今日' : new Date(date).toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
                 return (
                     <Box key={date} mt='40px'>

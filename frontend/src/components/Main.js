@@ -7,25 +7,59 @@ import { usePlayList } from "./customs/usePlayList.js";
 import Sidebar from "./Sidebar/Sidebar.js";
 import TrackList from "./TrackList.js";
 import SideMusic from "./SideMusic.js";
-import { Box, Center, Heading } from "@chakra-ui/react";
+import { Box, Center, CircularProgress, Heading, Skeleton } from "@chakra-ui/react";
 import { useAuth } from "./customs/useAuth.js";
+import useSWR from "swr";
+
+
+import '../css/test.css';
+import SkeletonUI from "./Skeletons/SkeletonUI.js";
 
 const Main = () => {
-  const [songs, setSongs] = useState([]);
+  // const [songs, setSongs] = useState([]);
   const { isSideMusic } = usePlayList();
   const [mostViewedMusicList, setMostViewedMusicList] = useState([]);
   const { user } = useAuth();
+  const {data:songs, error, isLoading} = useSWR('http://localhost:4000/music');
 
   useEffect(() => {
-    handleGetMusicList();
+    // handleGetMusicList();
     handleGetMostViewedMusicList();
   }, []);
 
-  async function handleGetMusicList() {
-    const res = await axios.get('http://localhost:4000/music');
-    const musiclist = res.data;
-    setSongs(musiclist);
-  }
+  const responsive = {
+    superLargeDesktop: {
+        breakpoint: { max: Infinity, min: 1800 },
+        items: 6
+    },
+    desktop: {
+        breakpoint: { max: 1800, min: 1500 },
+        items: 5
+    },
+    tablet: {
+        breakpoint: { max: 1500, min: 1100 },
+        items: 4
+    },
+    mobile: {
+        breakpoint: { max: 1100, min: 900 },
+        items: 3
+    },
+    mobile_900: {
+      breakpoint: { max: 900, min: 700 },
+      items: 2
+    },
+    mobile_700: {
+      breakpoint: { max: 700, min: 0 },
+      items: 1
+    },
+
+};
+
+  // async function handleGetMusicList() {
+  //   const res = await axios.get('http://localhost:4000/music');
+  //   const musiclist = res.data;
+  //   setSongs(musiclist);
+  // }
 
   async function handleGetMostViewedMusicList() {
     axios.get('http://localhost:4000/music/mostViewed')
@@ -38,7 +72,8 @@ const Main = () => {
   return (
         <Box className="main-container">
           <Box className="istyle">
-            <MusicList songs={songs}></MusicList>
+            {isLoading ? <SkeletonUI responsive={responsive}></SkeletonUI>: <MusicList songs={songs} responsive={responsive}></MusicList>}
+            
             <Slideshow mostViewedMusicList={mostViewedMusicList}></Slideshow>
             <TrackList ></TrackList>
           </Box>

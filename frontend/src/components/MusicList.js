@@ -11,7 +11,7 @@ import { faArrowLeft, faArrowRight, faChevronLeft, faChevronRight, faCircleArrow
 import '../css/test.css';
 import "../css/Main.css"
 
-const MusicList = ({ songs }) => {
+const MusicList = ({ songs, responsive }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const { addPlayList, selectedMusic, changeSelectedMusic, isSideMusic } = usePlayList();
     const navigate = useNavigate();
@@ -32,25 +32,6 @@ const MusicList = ({ songs }) => {
         increaseMusicView(music.id);
         return navigate(`/playList/${music.id}`);
     }
-
-    const responsive = {
-        superLargeDesktop: {
-            breakpoint: { max: 3000, min: 1500 },
-            items: 6
-        },
-        desktop: {
-            breakpoint: { max: 1500, min: 1200 },
-            items: 5
-        },
-        tablet: {
-            breakpoint: { max: 1200, min: 464 },
-            items: 4
-        },
-        mobile: {
-            breakpoint: { max: 464, min: 0 },
-            items: 3
-        }
-    };
 
     return (
         <Box className='music-list'

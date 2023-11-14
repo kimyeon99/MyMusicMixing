@@ -7,6 +7,8 @@ import {PlayListProvider} from '../src/components/customs/usePlayList'
 import { BrowserRouter } from 'react-router-dom';
 import { MusicEffectProvider } from './components/customs/useMusicEffect';
 import { AuthProvider } from './components/customs/useAuth';
+import { SWRConfig } from 'swr';
+import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,7 +16,16 @@ root.render(
     <MusicEffectProvider>
       <AuthProvider>
         <BrowserRouter>
-          <App />
+          <SWRConfig value={{fetcher:async (url) => {
+        try {
+          const response = await axios.get(url);
+          return response.data;
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          throw error;
+        }}}}>
+           <App />
+          </SWRConfig>
         </BrowserRouter>
       </AuthProvider>
     </MusicEffectProvider>
