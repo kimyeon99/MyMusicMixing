@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Param, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, ParseIntPipe, Body, Query } from '@nestjs/common';
 import { WatchHistoryService } from './watch-history.service';
 
 @Controller('watch-history')
@@ -6,10 +6,10 @@ export class WatchHistoryController {
     constructor(private readonly watchHistoryService: WatchHistoryService) {}
 
     @Get(':userId')
-    async getHistory(@Param('userId', ParseIntPipe) userId: number) {
-        return this.watchHistoryService.getHistory(userId);
+    async getHistory(@Param('userId', ParseIntPipe) userId: number, @Query('getNumber', ParseIntPipe) getNumber: number) {
+        return this.watchHistoryService.getHistory(userId, getNumber);
     }
-
+    
     @Post(':userId/:musicId')
     async addHistory(
         @Param('userId', ParseIntPipe) userId: number,

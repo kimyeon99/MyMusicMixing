@@ -64,7 +64,7 @@ export class MusicService {
     
         for (let i = 0; i < musicList.length; i++) {
           const music = musicList[i];
-    
+          ``
           // 이미지가 모두 할당되었다면 더 이상 진행하지 않습니다.
           if (i >= files.length) {
             break;
@@ -83,9 +83,19 @@ export class MusicService {
     
 
     async getAll() {
-      const musicList = await this.musicRepository.find();
-      return musicList;
+      return new Promise((resolve) => {
+        setTimeout(async () => {
+          const musicList = await this.musicRepository.find();
+          resolve(musicList);
+        }, 1800);
+      });
     }
+
+    async getAllNoDelay() {
+          const musicList = await this.musicRepository.find();
+          return musicList;
+    }
+    
   
     async increaseView(id: number) {
       const musicInfo = await this.musicRepository.findOne({ where: { id } });

@@ -15,18 +15,36 @@ export class WatchHistoryService {
 
     private logger: Logger = new Logger('AppGateway');
 
-    async getHistory(userId: number): Promise<WatchHistory[]> {
-        try {
-          const history = await this.historyRepository.find({
-            where: { userId: userId },
-            relations: ["music"]  // "music"은 WatchHistory 엔티티에서 musicId에 연결된 음악 엔티티를 참조하는 필드명이어야 합니다.
-          });
-          this.logger.log('history' + history);
-          return history;
-        } catch (error) {
-          console.error(`getHistory${error}`);
-        }
+    /* getNumber: getNumber수만큼 get요청*/
+    async getHistory(userId: number, getNumber: number): Promise<WatchHistory[]> {
+      try{
+        const result = await this.historyRepository
+          .createQueryBuilder('watch_history')
+          .leftJoinAndSelect('watch_history.music', 'music')  // music 정보를 가져오기 위한 조인
+          .select([
+            'music.id AS id',  
+            'music.title AS title',  
+            'music.artist AS artist',  
+            'music.img AS img',  
+            'music.url AS url',  
+            'music.view AS view',  
+            'MAX(watch_history.createdAt) AS lastWatched',
+            'COUNT(watch_history.musicId) AS count',
+          ])        
+          .where('watch_history.userId = :userId', { userId })
+          .groupBy('watch_history.musicId')
+          .orderBy('lastWatched', 'DESC')
+          .take(getNumber)
+          .getRawMany();
+        return result;
       }
+      catch(err){
+        this.logger.log(err);
+        return [];
+      }
+    
+    }
+    
       
 
     async addHistory(musicId: number, userId: number): Promise<WatchHistory> {

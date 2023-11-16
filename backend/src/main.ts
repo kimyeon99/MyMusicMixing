@@ -22,7 +22,7 @@ async function bootstrap() {
   // await musicService.saveImgInDB('../frontend/public/img');
 
   // const playlistService = app.get(PlaylistService);
-  // await playlistService.createPlaylist("A");
+  // await playlistService.create Playlist("A");
   // await playlistService.createPlaylist("B");
   // await playlistService.createPlaylist("C");
   // await playlistService.addMusicToPlaylist(10, 3);

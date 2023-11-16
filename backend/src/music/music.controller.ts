@@ -10,6 +10,11 @@ export class MusicController {
         return await this.musicService.getAll();
     }
 
+    @Get('no')
+    async getAllNoDelay() {
+        return await this.musicService.getAllNoDelay();
+    }
+
     @Post(':id/increaseView')
     async increaseView(@Param('id') id: number) {
         return await this.musicService.increaseView(id);
