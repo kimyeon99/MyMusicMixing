@@ -52,7 +52,7 @@ const SkeletonUI = ({ responsive }) => {
       <Heading mt="10px" ml="10px" fontSize={28} color={"white"}>
         Musics
       </Heading>
-      <Flex gap={10}>
+      <Flex gap={4}>
         {Array.from({ length: itemCount }).map((_, index) => (
           <Box key={index} className="sk-song musicItem">
             <Box>
@@ -60,13 +60,13 @@ const SkeletonUI = ({ responsive }) => {
                <SkeletonCircle
                 className="album-image"
                 maxW="180px"
-                h="180px"
-                w='100%'
+                w="100%"
+                h="140px"
                 mb="4"
                 borderRadius="8"
                />
-               <SkeletonText noOfLines={1} width="calc(90%)" />
-               <SkeletonText mt="5" noOfLines={1} width="calc(90%)" />
+               <SkeletonText noOfLines={1} w='100%' />
+               <SkeletonText mt="5" noOfLines={1} w='100%'/>
               </Center>
             </Box>
           </Box>

@@ -1,4 +1,4 @@
-import { Box, Button, Center, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, background, useColorModeValue, useToast } from "@chakra-ui/react";
+import { Box, Button, Center, CircularProgress, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, Heading, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Progress, Spinner, Text, background, cookieStorageManager, useColorModeValue, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
@@ -35,13 +35,16 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
         }
     }, [isModalOpen]);
     
-    async function handleGetMusicList() {
-        const res = await axios.get('http://localhost:4000/music');
-        const musiclist = res.data;
-        setSongs(musiclist);
+    const handleGetMusicList = async () => {
+        try{
+          const res = await axios.get('http://localhost:4000/music/no');
+          setSongs(res.data);
+        }catch(err){
+          console.err(err);
+        }
     }
 
-    async function handleGetPlaylist(userId) {
+    const handleGetPlaylist = async (userId) => {
         const res = await axios.get(`http://localhost:4000/playlist/${userId}`);
         const be_playlists = res.data;
         if(be_playlists){
@@ -52,7 +55,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
         }
     }
 
-    function handleOnDragEnd(result) {
+    const handleOnDragEnd = async (result) => {
         const { source, destination } = result;
 
         // 드랍 위치가 없거나 동일한 위치로 이동한 경우 아무것도 하지 않음
@@ -114,7 +117,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
   
     }
     
-    function showToast(type){
+    const showToast = (type) =>{
         switch(type){
             case 'music':
                 return toast({
@@ -143,7 +146,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
         }
     }
 
-    function addPlaylist(title){
+    const addPlaylist = (title) =>{
         const newPlaylist = {
             name: title,
             currentIndex: currentPlaylistIndex,
@@ -160,7 +163,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
         setAddState(false);
     }
     
-    async function createPlaylist(currentPlaylist){
+    const createPlaylist = async (currentPlaylist) => {
         const res = await axios.post(`http://localhost:4000/playlist`, {
           userId: user.userId, 
           currentPlaylist: currentPlaylist
@@ -170,37 +173,42 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
             onClose();
             resetModal();
           }).catch((err) => {
-
+            console.err(err);
           });
     }
 
-    async function savePlaylist(){
-      console.log('saveP'+savePoint);
+    const savePlaylist = async () => {
       const res = await axios.patch(`http://localhost:4000/playlist/${savePoint}`, currentPlaylist).
         then(() => {
           showToast('savePlaylist');
           onClose();
           resetModal();
       }).catch((err)=>{
-
+        console.err(err);
       });
     }
 
-    async function getSelectedPlaylist(playlist){
-      const res = await axios.get(`http://localhost:4000/playlist/${playlist.id}/selected`);
-      console.log('resres' + JSON.stringify(res));
-      const selectedPlaylistMusics = res.data.map(id => songs.find(song => song.id === id));
+    const getSelectedPlaylist = async (playlist) => {
+        try {
+          const res = await axios.get(`http://localhost:4000/playlist/${playlist.id}/selected`);
+          const selectedPlaylistMusics = Array.isArray(res.data)
+            ? res.data.map(id => songs.find(song => song.id === id))
+            : [];
       
-      const newPlaylist = {
-        name: playlist.name,
-        currentIndex: currentPlaylistIndex,
-        currentMusics: selectedPlaylistMusics,
-      };
-      setSavePoint(playlist.id);
-      setCurrentPlaylist(newPlaylist);
-    }
+          const newPlaylist = {
+            name: playlist.name,
+            currentIndex: currentPlaylistIndex,
+            currentMusics: selectedPlaylistMusics,
+          };
+      
+          setSavePoint(playlist.id);
+          setCurrentPlaylist(newPlaylist);
+        } catch (err) {
+          console.error(err);
+        }
+      };      
 
-    function resetModal(){
+    const resetModal = () => {
       setCurrentPlaylist(null);
       setCurrentPlaylistIndex(0);
       setCurrentPlaylistMusics([]);
@@ -209,20 +217,6 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
       setAddState(false);
       setSavePoint(0);
     }
-
-    // function addMusicToCurrentPlaylist(musicInfo){
-    //     const selectedSong = musicInfo;
-
-    //     // 선택된 노래를 songs 배열에서 제거
-    //     setSongs(prevSongs => prevSongs.filter((song) => song.id !== musicInfo.id));
-    
-    //     // 선택된 노래를 currentPlaylist의 currentMusics 배열에 추가
-    //     setCurrentPlaylist(prevPlaylist => ({
-    //         ...prevPlaylist,
-    //         currentMusics: [...prevPlaylist.currentMusics, selectedSong],
-    //     }));
-    // }
-    
     
     return (
         <Box>
@@ -230,8 +224,10 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
             <ModalOverlay />
             <ModalContent bg="blackAlpha.900">
               <ModalHeader>
-                <Box className="font_white">{playlists.length > 0 ? <Heading bgGradient="linear(to-l, #7928CA,#FF0080)" bgClip="text" fontSize="5xl" fontWeight="extrabold">{user.username}のプレイリスト</Heading> : <></>}</Box>
-                <Box className="font_white">{currentPlaylist ? <Heading>{currentPlaylist.name}</Heading> : ""}</Box>
+                {user ? <Box><Box className="font_white">{playlists.length > 0 ? <Heading bgGradient="linear(to-l, #7928CA,#FF0080)" bgClip="text" fontSize="5xl" fontWeight="extrabold">{user.username}のプレイリスト</Heading> : <></>}</Box>
+                <Box className="font_white">{currentPlaylist ? <Heading>{currentPlaylist.name}</Heading> : ""}</Box> </Box>
+                  : ''}
+                
               </ModalHeader>
               <ModalCloseButton />
               <ModalBody>
@@ -353,8 +349,8 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                           }}
                         >
                           <Box w="250px" h="330px" pr='10px' overflowY="auto">
-                            {currentPlaylist ? (
-                              songs.map((song, index) => (
+                            {currentPlaylist ?
+                              (songs.map((song, index) => (
                                 <Draggable
                                   key={song.id}
                                   draggableId={String(song.id)}
@@ -401,7 +397,7 @@ const PlaylistModal = ({onClose, isModalOpen}) => {
                   <Button onClick={() => createPlaylist(currentPlaylist)} colorScheme="green" mr={3}>
                     Create
                   </Button>}
-                <Button onClick={()=>{onClose(); resetModal();}} colorScheme="blue">
+                <Button onClick={()=>{ onClose(); resetModal();}} colorScheme="blue">
                   Close
                 </Button>
               </ModalFooter>

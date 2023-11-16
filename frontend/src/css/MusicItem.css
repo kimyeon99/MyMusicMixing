@@ -1,4 +1,4 @@
-.music-item .play-icon{
+.music-item-ind .play-icon{
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.5s ease;
@@ -6,13 +6,21 @@
     left:0.5%;
     top:10%;
 }
-.music-item:hover .play-icon{
+.music-item-ind:hover .play-icon{
     opacity: 1;
     transform: translateY(0px);
 }
-.music-item:hover .text-hover{
+.music-item-ind:hover .text-hover{
     text-decoration: underline;
 }
-.music-item{
+.music-item-ind{
     cursor: pointer;
 }
+.music-item-ind {
+    background-color: #181818;
+    margin-right: 25px;
+    margin-bottom: 30px;
+    width:100%;
+    transition: background-color 0.35s;
+    border-radius: 6%;
+  }

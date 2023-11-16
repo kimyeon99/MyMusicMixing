@@ -3,13 +3,6 @@ import { faCreditCard, faFighterJet, faPause, faPauseCircle, faPlane, faPlay, fa
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
 import { usePlayList } from './customs/usePlayList';
-import baseImg2 from '../img/base_image2.jpg';
-import baseImg3 from '../img/base_image3.jpg';
-import baseImg4 from '../img/base_image4.jpg';
-import baseImg5 from '../img/base_image5.jpg';
-import baseImg6 from '../img/base_image5.webp';
-import baseImg7 from '../img/base_image7.jpg';
-import baseImg8 from '../img/base_image8.jpg';
 import MusicVisualizer from './customs/MusicVisualizer';
 import ColorThief from 'colorthief';
 import convert from 'color-convert';
@@ -88,7 +81,7 @@ const PlayListMusics = ({ loading }) => {
 
   }, [loading]);
 
-  function brightness(rgb) {
+  const brightness = (rgb) => {
     return (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
   }
 
@@ -139,7 +132,7 @@ const PlayListMusics = ({ loading }) => {
     ],
   };
 
-  function handlePlayMusic() {
+  const handlePlayMusic = () => {
     playToggleHandler();
     if(user && !isPlaying){
       setPlayTime(0); // 재생 시간 초기화
@@ -147,33 +140,29 @@ const PlayListMusics = ({ loading }) => {
     }
   }
 
-    function addMusicToWatchHistory() {
-      const interval = setInterval(() => {
-        setPlayTime((prevPlayTime) => prevPlayTime + 1);
-      }, 1000);
-    
-      // 10초 후에 실행할 작업을 예약
-      setTimeout(() => {
-        setPlayTime((currentPlayTime) => {
-          // 10초 이상 재생한 경우에만 시청 기록에 추가
-          if (currentPlayTime >= 10) {
-            axios.post(`http://localhost:4000/watch-history/${user.userId}/${selectedMusic.id}`)
-              .then((res) => {
-                console.log('시청 기록이 추가되었습니다.');
-              })
-              .catch((error) => {
-                console.error('시청 기록 추가 중 오류가 발생했습니다.', error);
-              });
-          }
-    
-          // 예약해놓은 interval을 정리
-          clearInterval(interval);
-    
-          // playTime 상태를 그대로 반환 (상태를 업데이트하지 않음)
-          return currentPlayTime;
-        });
-      }, 10000);
-    }  
+  const addMusicToWatchHistory = () => {
+    const interval = setInterval(() => {
+      setPlayTime((prevPlayTime) => prevPlayTime + 1);
+    }, 1000);
+  
+    // 10초 후에 실행할 작업을 예약
+    setTimeout(() => {
+      setPlayTime((currentPlayTime) => {
+        // 10초 이상 재생한 경우에만 시청 기록에 추가
+        if (currentPlayTime >= 10) {
+          axios.post(`http://localhost:4000/watch-history/${user.userId}/${selectedMusic.id}`)
+            .then((res) => {
+              console.log('시청 기록이 추가되었습니다.');
+            })
+            .catch((error) => {
+              console.error('시청 기록 추가 중 오류가 발생했습니다.', error);
+            });
+        }
+        clearInterval(interval);
+        return currentPlayTime;
+      });
+    }, 10000);
+  }  
 
   return (
     // style={{ background: `linear-gradient(to bottom, ${bgColor}, #000)` }}

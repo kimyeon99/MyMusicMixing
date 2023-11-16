@@ -9,7 +9,8 @@ import 'react-multi-carousel/lib/styles.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faChevronLeft, faChevronRight, faCircleArrowRight, faCircleChevronLeft, faCircleChevronRight, faPlayCircle } from '@fortawesome/free-solid-svg-icons';
 import '../css/test.css';
-import "../css/Main.css"
+import '../css/Main.css';
+import '../css/MusicList.css';
 
 const MusicList = ({ songs, responsive }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -17,7 +18,7 @@ const MusicList = ({ songs, responsive }) => {
     const navigate = useNavigate();
     const carouselRef = useRef(null);
 
-    async function increaseMusicView(musicId) {
+    const increaseMusicView = async (musicId) => {
         try {
             const res = await axios.post(`http://localhost:4000/music/${musicId}/increaseView`);
             console.log(res.data);
@@ -27,7 +28,7 @@ const MusicList = ({ songs, responsive }) => {
         }
     }
 
-    function handlePlayMusic(music) {
+    const handlePlayMusic = (music) => {
         changeSelectedMusic(music);
         increaseMusicView(music.id);
         return navigate(`/playList/${music.id}`);

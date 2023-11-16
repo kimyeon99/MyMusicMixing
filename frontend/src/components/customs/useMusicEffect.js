@@ -4,15 +4,15 @@ import Pizzicato from 'pizzicato';
 
 const MusicEffect = createContext();
 
-export function useMusicEffect() {
+export const useMusicEffect = () => {
     return useContext(MusicEffect);
 }
 
-export function MusicEffectProvider({ children }) {
+export const MusicEffectProvider = ({ children }) => {
     const { soundRef } = usePlayList();
     const [selectedEffect, setSeletedEffect] = useState('');
 
-    function changeReverb() {
+    const changeReverb = () => {
         const reverb = new Pizzicato.Effects.Reverb({
             time: 0.5,
             decay: 0.7,
@@ -22,7 +22,7 @@ export function MusicEffectProvider({ children }) {
         soundRef.current.addEffect(reverb);
     }
 
-    function changeDelay() {
+    const changeDelay = () => {
         const delay = new Pizzicato.Effects.Delay({
             feedback: 0.2,
             time: 0.1,
@@ -31,7 +31,7 @@ export function MusicEffectProvider({ children }) {
         soundRef.current.addEffect(delay);
     }
 
-    function changeChorus() {
+    const changeChorus = () => {
         const chorus = new Pizzicato.Effects.Chorus({
             rate: 1.5,
             feedback: 0.2,
@@ -43,7 +43,7 @@ export function MusicEffectProvider({ children }) {
         soundRef.current.addEffect(chorus);
     }
 
-    function changeDistortion() {
+    const changeDistortion = () => {
         const distortion = new Pizzicato.Effects.Distortion({
             gain: 0.1
         });
@@ -51,7 +51,7 @@ export function MusicEffectProvider({ children }) {
         soundRef.current.addEffect(distortion);
     }
 
-    function changePan(){
+    const changePan = ()=> {
         const pan = new Pizzicato.Effects.Distortion({
             pan: 0.5
         })

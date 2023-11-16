@@ -13,7 +13,7 @@ const MusicVisualizer = ({ width, height }) => {
       var analyserNode = soundRef.current.analyserNode;
       let animationFrameId;
 
-      function renderChart() {
+      const renderChart = () => {
         animationFrameId = requestAnimationFrame(renderChart);
         var frequencyData = new Uint8Array(analyserNode.frequencyBinCount);
 

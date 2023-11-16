@@ -1,15 +1,13 @@
 import { createContext, useContext, useEffect, useState, useRef } from 'react';
 import Pizzicato from 'pizzicato';
-import * as d3 from "d3";
-
 
 const PlayListContext = createContext();
-<script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script>
-export function usePlayList() {
+{/* <script src="https://cdn.jsdelivr.net/npm/p5@1.7.0/lib/p5.js"></script> */}
+export const usePlayList = () => {
   return useContext(PlayListContext);
 }
 
-export function PlayListProvider({ children }) {
+export const PlayListProvider = ({ children }) => {
   const [playList, setPlayList] = useState([]);
   const [selectedMusic, setSelectedMusic] = useState(null);
   const [playingMusic, setPlayingMusic] = useState(null);
@@ -23,27 +21,28 @@ export function PlayListProvider({ children }) {
   const soundRef = useRef(null); // Pizzicato.Sound 인스턴스를 저장하기 위한 useRef
   const ref = useRef();
 
-  function changeSelectedMusic(music){
+  const changeSelectedMusic = (music) => {
     setSelectedMusic(music);
   }
 
-  function addPlayList(song){
+  const addPlayList = (song) => {
     if(playList.includes(song)){
       return;
     }
     return setPlayList((prevPlayList)=> [...prevPlayList, song]);
   };
 
-  function clearPlayList() {
+  const clearPlayList = () => {
     setPlayList([]);
   };
 
-  function toggleIsSideMusic(){
+  const toggleIsSideMusic = () => {
     if(isSideMusic) setIsSideMusic(false);
     else setIsSideMusic(true);
   }
 
-  function playToggleHandler(){
+  const playToggleHandler = () => {
+    setIsLoading(true);
     // playingMusic이 null인 경우 또는 선택된 음악과 현재 재생 중인 음악이 다른 경우
     if (!playingMusic || playingMusic !== selectedMusic) {
       createNewSound();
@@ -52,25 +51,21 @@ export function PlayListProvider({ children }) {
       playToggleMusicPlayer();
     }
   }
-
-  function playToggleMini(){
-    // playingMusic이 null인 경우 또는 선택된 음악과 현재 재생 중인 음악이 다른 경우
-    if (!playingMusic || playingMusic !== selectedMusic) {
-      createNewSound();
-    } else {
-      playToggleMusicPlayer();
-    }
-  }
   
-  function createNewSound() {
+  const createNewSound = () => {
     // 기존에 재생하던 노래가 있다면 stop
     if (soundRef.current) {
       soundRef.current.stop();
       soundRef.current = null;
     }
-  
-    const NowSongUrl = decodeURIComponent(selectedMusic.url);
-    
+
+    let NowSongUrl;
+    if(decodeURIComponent(selectedMusic.url)){
+       NowSongUrl = decodeURIComponent(selectedMusic.url);
+    }else{
+      NowSongUrl = selectedMusic.url;
+    }
+
     // 새로운 노래로 Pizzicato.Sound 객체 생성
     soundRef.current = new Pizzicato.Sound({
       source: 'file',
@@ -92,7 +87,7 @@ export function PlayListProvider({ children }) {
        });
   }
   
-  function playToggleMusicPlayer(){
+  const playToggleMusicPlayer = ()=> {
      if(isPlaying){
        soundRef.current.pause();
        setIsPlaying(false);
@@ -101,18 +96,12 @@ export function PlayListProvider({ children }) {
        setIsPlaying(true);
      }
   }
-  
-  
 
-  function changeVolumeHandler(newVolume){
+  const changeVolumeHandler = (newVolume)=> {
     if(soundRef.current){
       soundRef.current.volume = newVolume;
     }
   }
-
-  useEffect(() => {
-    console.log('플레이리스트 업데이트 완료', playList);
-  }, [playList]); // playList 상태가 업데이트될 때마다 실행
 
   useEffect(() => {
     if (soundRef.current) {

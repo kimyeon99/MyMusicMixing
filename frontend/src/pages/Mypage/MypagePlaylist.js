@@ -23,23 +23,30 @@ const MypagePlaylist = () =>{
         }
     }, []);
 
-    async function handleGetMusicList() {
-        const res = await axios.get('http://localhost:4000/music');
-        const musiclist = res.data;
-        setSongs(musiclist);
-    }
-
-    async function handleGetPlaylist(userId) {
-        const res = await axios.get(`http://localhost:4000/playlist/${userId}`);
-        const be_playlists = res.data;
-        if(be_playlists){
-            setPlaylists(be_playlists);
-        }else{
-            setPlaylists([]);
+    const handleGetMusicList = async () => {
+        try{
+            const res = await axios.get('http://localhost:4000/music');
+            return setSongs(res.data);
+        }catch(err){
+            console.err(err);
         }
     }
 
-    function addPlaylist(title){
+    const handleGetPlaylist = async ( userId) => {
+        try{
+            const res = await axios.get(`http://localhost:4000/playlist/${userId}`);
+            const be_playlists = res.data;
+            if(be_playlists){
+                setPlaylists(be_playlists);
+            }else{
+                setPlaylists([]);
+            }
+        }catch(err){
+            console.err(err);
+        }
+    }
+
+    const addPlaylist = (title) => {
         setCurrentPlaylistIndex(0);
         const newPlaylist = {
             name: title,
@@ -52,7 +59,7 @@ const MypagePlaylist = () =>{
         setAddState(false);
     }
 
-    function addMusicToCurrentPlaylist(musicInfo){
+    const addMusicToCurrentPlaylist = (musicInfo) => {
         const selectedSong = musicInfo;
 
         // 선택된 노래를 songs 배열에서 제거
@@ -65,10 +72,13 @@ const MypagePlaylist = () =>{
         }));
     }
 
-    async function savePlaylist(currentPlaylist){
-        const res = await axios.post(`http://localhost:4000/playlist/${user.userId}`, currentPlaylist);
-        console.log(res);
-        handleGetPlaylist(user.userId);
+    const savePlaylist  = async (currentPlaylist) =>{
+        try{
+            const res = await axios.post(`http://localhost:4000/playlist/${user.userId}`, currentPlaylist);
+            return handleGetPlaylist(user.userId);
+        }catch(err){
+            console.err(err);
+        }
     }
 
     return (
@@ -88,7 +98,7 @@ const MypagePlaylist = () =>{
                         )
                         :
                         (<Box>
-                            <Text>아무것도없음</Text>
+                            <Text>Nothing</Text>
                             <Button onClick={() => 
                                 setAddState(true)}>추가</Button>
                                     {addState && (

@@ -32,6 +32,7 @@
 .music-item:hover img {}
 
 .album-image {
+  min-width: '180px';
   width: '180px';
   height: '180px';
   overflow: 'hidden';

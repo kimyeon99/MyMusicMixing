@@ -19,7 +19,7 @@ const MusicPlayer = () => {
     setCurrentSongIndex((prevIndex) => (prevIndex === 0 ? playList.length - 1 : prevIndex - 1));
   };
 
-  function changeVolume(newVolume) {
+  const changeVolume = (newVolume) => {
     changeVolumeHandler(parseFloat(newVolume));
   }
 

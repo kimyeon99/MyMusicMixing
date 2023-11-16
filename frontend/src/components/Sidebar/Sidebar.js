@@ -22,18 +22,21 @@ const Sidebar = () => {
 
   const navigate = useNavigate();
 
-  function onOpen(){
+  const onOpen = () =>{
     setIsModalOpen(true);
   }
 
-  function onClose(){
+  const onClose = () =>{
     setIsModalOpen(false);
   }
 
-  async function getWatchHistory(){
-    const res = await axios.get(`http://localhost:4000/watch-history/${user.userId}?getNumber=4`);
-    console.log('getWatchHistory' + JSON.stringify(res.data));
-    return setWatchHistory(res.data);
+  const getWatchHistory = async () =>{
+    try{
+      const res = await axios.get(`http://localhost:4000/watch-history/${user.userId}?getNumber=4`);
+      return setWatchHistory(res.data);
+    }catch(err){
+      console.err(err);
+    }
   }
 
   return (
@@ -77,7 +80,7 @@ const Sidebar = () => {
             <Text className='font_gray'>It's simple</Text>
             {!user ? (
               <Tooltip label="ログインが必要です。" bg="red.600" placement="right">
-                <Button size="sm" onClick={onOpen} isDisabled={!user}>
+                <Button size="sm" onClick={onOpen} isDisabled={true}>
                   Create
                 </Button>
               </Tooltip>
@@ -96,7 +99,7 @@ const Sidebar = () => {
                   <Heading fontSize='16px' className='font_white'>Record</Heading>
                   {!user ? 
                     <Tooltip label="ログインが必要です。" bg='red.600' placement='right'>
-                    <Button mt='2' onClick={getWatchHistory} isDisabled={!user} >
+                    <Button mt='2' onClick={getWatchHistory} isDisabled={true}>
                         Look
                     </Button>
                   </Tooltip>
@@ -104,7 +107,7 @@ const Sidebar = () => {
                     <AccordionButton
                       mt='2'
                       onClick={(e) => {getWatchHistory(); e.stopPropagation();}}
-                      isDisabled={!user}
+                      
                       backgroundColor="gray.200"
                       bg='gray.200'
                       _hover={{ backgroundColor: "gray.200" }}

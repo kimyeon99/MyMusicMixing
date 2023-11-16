@@ -38,7 +38,7 @@ const Login = () => {
         }
     };
 
-    async function handleLogin(e) {
+    const handleLogin = async (e) => {
         e.preventDefault();
         try {
             const response = await authAxios.post('http://localhost:4000/auth/login', {
